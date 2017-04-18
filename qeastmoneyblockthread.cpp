@@ -145,7 +145,7 @@ void QEastMoneyBlockThread::GetShares(const QString &pBlockCode, QList<QString>&
     //开始解析数据
     QByteArray bytes = reply->readAll();
     QString result = QString::fromUtf8(bytes.data());
-    qDebug()<<"result:"<<result;
+    //qDebug()<<"result:"<<result;
     int startindex = result.indexOf("[") + 1;
     int endindex = result.indexOf("]");
     if(startindex < 0 || endindex < 0) return;
@@ -197,12 +197,13 @@ void QEastMoneyBlockThread::GetBlockShares()
             data.code = group;
             data.name = Profiles::instance()->value(data.code, BLOCK_NMAE).toString();
             data.stklist = Profiles::instance()->value(data.code, BLOCK_CODE).toStringList();
-//            qDebug()<<"stklist:"<<data.stklist;
+            //            qDebug()<<"stklist:"<<data.stklist;
             mBlockDataList[data.code] = data;
 
         }
-    } else
-    {        
+    }
+    else
+    {
         QNetworkAccessManager *mgr = new QNetworkAccessManager;
         QString url("http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=C._BK%1&sty=FCCS&st=c&p=1&ps=100&cb=&js=var%20BKtrade%20={Trade:[[(x)]]}&token=d0075ac6916d4aa6ec8495db9efe7ede&bklb=%2&jsName=BKtrade&sr=%3&dt=%4");
         for(int i = BLOCK_DISTRICT; i<=BLOCK_CONCEPT; i++ )
@@ -240,7 +241,9 @@ void QEastMoneyBlockThread::GetBlockShares()
                 int index = 0;
                 QString content = (i==BLOCK_DISTRICT? tr("地区") : i== BLOCK_CONCEPT? tr("概念"): tr("行业"));
                 foreach (QString blockInfo, blockInfoList) {
-                    emit signalUpdateMsg(QString("%1%2:%3/%4").arg(tr("正在更新")).arg(content).arg(++index).arg(total));
+                    index++;
+                    qDebug()<<QString("%1%2:%3/%4").arg(tr("正在更新")).arg(content).arg(index).arg(total);
+                    emit signalUpdateMsg(QString("%1%2:%3/%4").arg(tr("正在更新")).arg(content).arg(index).arg(total));
                     QStringList detailList = blockInfo.split(",", QString::SkipEmptyParts);
                     //qDebug()<<"line:"<<detailList;
                     if(detailList.length() < 11) continue;
@@ -251,7 +254,9 @@ void QEastMoneyBlockThread::GetBlockShares()
                     wklist.append(data);
                     //取得对应的所有code
                     GetShares(data.code, data.stklist);
+
                     mBlockDataList[data.code] = data;
+
 
                     Profiles::instance()->setValue(data.code, BLOCK_NMAE, data.name);
                     Profiles::instance()->setValue(data.code, BLOCK_CODE, data.stklist);
@@ -269,7 +274,7 @@ void QEastMoneyBlockThread::GetBlockShares()
         slotUpdateFHSPInfo();
         int index = 0;
         int total = mShareBlockList.keys().length();
-        foreach (QString code, mShareBlockList.keys()) {            
+        foreach (QString code, mShareBlockList.keys()) {
             emit signalUpdateMsg(QString("%1:%2/%3").arg(tr("正在更新板块信息")).arg(++index).arg(total));
             StkInfoFileManage *filemgr = new StkInfoFileManage(code.right(6));
             filemgr->setValue("Block", "names", mShareBlockList[code]);
@@ -279,7 +284,7 @@ void QEastMoneyBlockThread::GetBlockShares()
 
     }
 
- FUNC_END:
+FUNC_END:
 
 
     //开始取得所有股票代码
@@ -307,7 +312,7 @@ void QEastMoneyBlockThread::GetBlockShares()
 
 
 
-//    emit updateBlockCodesFinished();
+    //    emit updateBlockCodesFinished();
     return;
 }
 
@@ -336,9 +341,11 @@ void QEastMoneyBlockThread::slotWorkThreadFinished()
         wkthread->deleteLater();
         //emit sendStkinfoUpdateProgress();
     }
+    qDebug()<<"Remain thread length: "<< mWorkThreadList.length();
     if(mWorkThreadList.length() == 0)
     {
         emit updateBlockCodesFinished();
+        qDebug()<< "update block codes finished!";
     }
 }
 

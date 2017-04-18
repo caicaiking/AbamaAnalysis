@@ -11,7 +11,7 @@ public:
     BlockData();
     ~BlockData();
 public:
-    QString         code;
+    QString         code; //板块代码
     QString         name;
     double          changePer;
     double          mktkap; //市值

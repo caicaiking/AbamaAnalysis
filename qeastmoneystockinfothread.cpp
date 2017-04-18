@@ -216,6 +216,7 @@ void qeastmoneystockinfothread::run()
         wkURL = QString("http://nufm.dfcfw.com/EM_Finance2014NumericApplication/JS.aspx?type=CT&cmd=P.[(x)]|%1&sty=MPICT&st=z&sr=&p=&ps=&cb=callback&js=&token=aaf32a88de888ea7b0ea63e017ecb049&_=%2")
                 .arg(code).arg(QDateTime::currentMSecsSinceEpoch());
 
+        //qDebug()<<"wkURL:" <<wkURL;
         reply  = mgr->get(QNetworkRequest(wkURL));
         if(!reply)
         {

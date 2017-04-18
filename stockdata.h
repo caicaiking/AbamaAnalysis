@@ -50,7 +50,7 @@ public:
     double      zht;
     double      dit;
     int         vol;
-    double         money;
+    double      money;
     double      hsl;
     double      last_money;
     int         last_vol;
@@ -68,8 +68,8 @@ public:
     QString     time;
     double      zjlx;
     double      szzbl;
-    double      xjfh;
-    double      gxl;
+    double      xjfh; //现金分红
+    double      gxl;  //股息率
     QString     gqdjr; //股权登记日
     QString     yaggr;
     double      totalCap;
