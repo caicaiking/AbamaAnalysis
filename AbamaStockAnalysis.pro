@@ -35,7 +35,8 @@ SOURCES += \
     Stocks/qsinastkinfothread.cpp \
     Stocks/stkinfofilemanage.cpp \
     Stocks/stkmktcap.cpp \
-    Stocks/stockdata.cpp
+    Stocks/stockdata.cpp \
+    DataBase/clsDBOp.cpp
 
 
 RC_FILE  =Icon.rc
@@ -52,5 +53,6 @@ HEADERS += \
     Stocks/qsinastkinfothread.h \
     Stocks/stkinfofilemanage.h \
     Stocks/stkmktcap.h \
-    Stocks/stockdata.h
+    Stocks/stockdata.h \
+    DataBase/clsDBOp.h
 
