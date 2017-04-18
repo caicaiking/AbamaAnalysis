@@ -6,7 +6,7 @@
 
 QT       += core gui sql network concurrent
 
-INCLUDEPATH += Windows
+INCLUDEPATH += Stocks
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,27 +27,30 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    qsinastkinfothread.cpp \
-    profiles.cpp \
-    stkmktcap.cpp \
-    stockdata.cpp \
-    stkinfofilemanage.cpp \
-    qexchangedatamanage.cpp \
-    qeastmoneyblockthread.cpp \
-    BlockData.cpp \
-    qeastmoneystockinfothread.cpp
+    Stocks/BlockData.cpp \
+    Stocks/profiles.cpp \
+    Stocks/qeastmoneyblockthread.cpp \
+    Stocks/qeastmoneystockinfothread.cpp \
+    Stocks/qexchangedatamanage.cpp \
+    Stocks/qsinastkinfothread.cpp \
+    Stocks/stkinfofilemanage.cpp \
+    Stocks/stkmktcap.cpp \
+    Stocks/stockdata.cpp
+
 
 RC_FILE  =Icon.rc
 
 DESTDIR =$$PWD/Exe/
 
 HEADERS += \
-    qsinastkinfothread.h \
-    profiles.h \
-    stkmktcap.h \
-    stockdata.h \
-    stkinfofilemanage.h \
-    qexchangedatamanage.h \
-    qeastmoneyblockthread.h \
-    BlockData.h \
-    qeastmoneystockinfothread.h
+    Stocks/basedata.h \
+    Stocks/BlockData.h \
+    Stocks/profiles.h \
+    Stocks/qeastmoneyblockthread.h \
+    Stocks/qeastmoneystockinfothread.h \
+    Stocks/qexchangedatamanage.h \
+    Stocks/qsinastkinfothread.h \
+    Stocks/stkinfofilemanage.h \
+    Stocks/stkmktcap.h \
+    Stocks/stockdata.h
+

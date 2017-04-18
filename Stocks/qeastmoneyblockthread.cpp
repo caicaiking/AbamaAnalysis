@@ -363,7 +363,7 @@ void QEastMoneyBlockThread::slotUpdateFHSPInfo()
     QString date = Profiles::instance()->value(REPORT, BLOCK_TIME).toString();
     QString url("http://data.eastmoney.com/DataCenter_V3/yjfp/getlist.ashx?js=var vWLdLOFe&pagesize=5000&page=1&sr=-1&sortType=SZZBL&mtk=%C8%AB%B2%BF%B9%C9%C6%B1&filter=(ReportingPeriod=^%1^)&rt=49499306");
     QString wkURL = url.arg(date);
-    //qDebug()<<"wkURL:"<<wkURL;
+    qDebug()<<"wkURL:"<<wkURL;
     QNetworkReply *reply  = mgr->get(QNetworkRequest(wkURL));
     if(!reply)
     {
