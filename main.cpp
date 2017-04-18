@@ -2,6 +2,8 @@
 #include <QApplication>
 #include "qsinastkinfothread.h"
 #include "qeastmoneyblockthread.h"
+#include <QDebug>
+#include "clsMainWindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,7 +17,12 @@ int main(int argc, char *argv[])
 //    mIndexThread->setStkList(indexlist);
 //    mIndexThread->start();
 
-    QEastMoneyBlockThread *mBlockThread = new QEastMoneyBlockThread(&a);
-    mBlockThread->start();
+//    QEastMoneyBlockThread *mBlockThread = new QEastMoneyBlockThread(&a);
+//    mBlockThread->start();
+
+    clsMainWindow w;
+    w.show();
+
+    qDebug()<< qApp->applicationDirPath();
     return a.exec();
 }

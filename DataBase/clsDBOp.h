@@ -2,7 +2,7 @@
 #define CLSDBOP_H
 
 #include <QObject>
-
+#include <QSqlDatabase>
 class clsDBOp : public QObject
 {
     Q_OBJECT
@@ -10,9 +10,11 @@ class clsDBOp : public QObject
 private:
     explicit clsDBOp(QObject *parent = 0);
 public:
-    ~clsDBOp(){}
+    ~clsDBOp();
 
     static clsDBOp *instance();
+
+    QSqlDatabase getDb() const;
 
 signals:
 
@@ -27,10 +29,13 @@ private:
        ~clsRmDBOp()
        {
            if (clsDBOp::mInstance)
-               delete mInstance::mInstance;
+               delete clsDBOp::mInstance;
        }
    };
    static clsRmDBOp rmDbOp; // 定义一个静态成员，在程序结束时，系统会调用它的析构函数
+
+   QSqlDatabase db;
+
 
 };
 

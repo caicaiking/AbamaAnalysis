@@ -1,13 +1,15 @@
 ﻿#include "profiles.h"
-
+#include <QApplication>
 Profiles* Profiles::minstance = 0;
 Profiles::MGarbage Profiles::Garbage;
 Profiles::Profiles(QObject *parent) :
     configSettings(NULL),
     QObject(parent)
 {
-    configSettings = new QSettings("etc/profiles.ini", QSettings::IniFormat);
+    configSettings = new QSettings(qApp->applicationDirPath()+"/etc/profiles.ini", QSettings::IniFormat);
     configSettings->setIniCodec(QTextCodec::codecForName("GB18030"));
+
+    qDebug()<<configSettings->fileName();
 }
 
 Profiles::~Profiles()

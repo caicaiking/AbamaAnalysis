@@ -1,9 +1,11 @@
 ﻿#include "stkinfofilemanage.h"
+#include <QApplication>
 StkInfoFileManage::StkInfoFileManage(const QString& filenm, QObject *parent) :
     configSettings(NULL),
     QObject(parent)
 {
-    configSettings = new QSettings(QString("data/%1").arg(filenm), QSettings::IniFormat);
+
+    configSettings = new QSettings(QString(qApp->applicationDirPath()+"/data/%1").arg(filenm), QSettings::IniFormat);
     configSettings->setIniCodec(QTextCodec::codecForName("GB18030"));
 }
 

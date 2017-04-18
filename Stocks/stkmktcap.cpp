@@ -5,7 +5,7 @@ MktCapFile::MktCapFile(QObject *parent) :
     configSettings(NULL),
     QObject(parent)
 {
-    configSettings = new QSettings("etc/mktfile.ini", QSettings::IniFormat);
+    configSettings = new QSettings("./etc/mktfile.ini", QSettings::IniFormat);
     configSettings->setIniCodec(QTextCodec::codecForName("GB18030"));
 }
 

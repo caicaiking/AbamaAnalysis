@@ -111,7 +111,7 @@ void qeastmoneystockinfothread::run()
     qDebug()<<"stk info update finished";
     mgr->deleteLater();
 #else
-    //下载前10天的数据，如果数据
+    //下载前10天的数据，如果数据 下载 历史数据从2016年12月30开始
     QNetworkAccessManager *mgr = new QNetworkAccessManager;
     foreach (QString code, mStockcodeList) {
         emit sendUpdateProgress(1, 1);
