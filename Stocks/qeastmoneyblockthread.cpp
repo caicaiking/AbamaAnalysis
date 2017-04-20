@@ -291,6 +291,8 @@ void QEastMoneyBlockThread::GetBlockShares()
 
     //在这儿创建 板块数据库和股票代码数据库
 
+    db->createStockTable();
+    db->createBlockTable();
     db->fillBlockTable(mBlockDataList);
 
 
