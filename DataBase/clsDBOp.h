@@ -13,6 +13,7 @@ public:
     ~clsDBOp();
 
     static clsDBOp *instance();
+    bool isOpen() const;
 
     QSqlDatabase getDb() const;
 

@@ -7,7 +7,8 @@
 QT       += core gui sql network concurrent
 
 INCLUDEPATH += Stocks \
-                Windows
+                Windows \
+                DataBase
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -38,7 +39,8 @@ SOURCES += \
     Stocks/stkmktcap.cpp \
     Stocks/stockdata.cpp \
     DataBase/clsDBOp.cpp \
-    Windows/clsMainWindow.cpp
+    Windows/clsMainWindow.cpp \
+    DataBase/clsDBCreateTables.cpp
 
 
 RC_FILE  =Icon.rc
@@ -57,7 +59,8 @@ HEADERS += \
     Stocks/stkmktcap.h \
     Stocks/stockdata.h \
     DataBase/clsDBOp.h \
-    Windows/clsMainWindow.h
+    Windows/clsMainWindow.h \
+    DataBase/clsDBCreateTables.h
 
 FORMS += \
     Windows/clsMainWindow.ui

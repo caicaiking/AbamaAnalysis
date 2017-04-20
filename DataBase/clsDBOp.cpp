@@ -10,6 +10,7 @@ clsDBOp::clsDBOp(QObject *parent) : QObject(parent)
 {
     db =QSqlDatabase::addDatabase ("QSQLITE");
     db.setDatabaseName("StockData.db");
+    db.open();
 
 }
 
@@ -28,10 +29,14 @@ clsDBOp *clsDBOp::instance()
         QMutexLocker locker(&mutex);
         if(mInstance ==0)
             mInstance = new clsDBOp();
-
     }
 
     return mInstance;
+}
+
+bool clsDBOp::isOpen() const
+{
+    return db.isOpen();
 }
 
 QSqlDatabase clsDBOp::getDb() const

@@ -11,6 +11,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include "qexchangedatamanage.h"
+#include "clsDBCreateTables.h"
 
 #define     BLOCK_NMAE          "name"
 #define     BLOCK_CODE          "codes"
@@ -252,7 +253,7 @@ void QEastMoneyBlockThread::GetBlockShares()
                     data.code = detailList[1].replace("BK0", replaceStr);
                     data.name = detailList[2];
                     wklist.append(data);
-                    //取得对应的所有code
+                    //取得对应的所有code 并且获取每一个S
                     GetShares(data.code, data.stklist);
 
                     mBlockDataList[data.code] = data;

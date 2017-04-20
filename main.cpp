@@ -4,7 +4,8 @@
 #include "qeastmoneyblockthread.h"
 #include <QDebug>
 #include "clsMainWindow.h"
-
+#include "clsDBOp.h"
+#include "clsDBCreateTables.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -23,6 +24,10 @@ int main(int argc, char *argv[])
     clsMainWindow w;
     w.show();
 
-    qDebug()<< qApp->applicationDirPath();
+   clsDBOp::instance()->isOpen();
+
+   clsDBCreateTables * db = new clsDBCreateTables();
+   db->createStockTable();
+   db->createBlockTable();
     return a.exec();
 }
