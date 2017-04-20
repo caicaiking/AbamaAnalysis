@@ -2,22 +2,31 @@
 #define CLSDBCREATETABLES_H
 
 #include <QObject>
+#include "BlockData.h"
 
-
+struct DetailSTR
+{
+    int blockName;
+    int id;
+    QStringList codes;
+};
 class clsDBCreateTables: public QObject
 {
     Q_OBJECT
 public:
-   explicit clsDBCreateTables(QObject *parent =0);
+    explicit clsDBCreateTables(QObject *parent =0);
 
-    bool createStockTable();
+      bool createStockTable();
+      bool createBlockTable();
+      void fillBlockTable(const QMap<QString, BlockData> data);
 
-    bool createBlockTable();
-    bool fillBlockTable();
+      bool createDetaiTable();
+      void fillDetailTable(const QStringList mStkCodesList);
+      void createCodesTable(QString code);
 signals:
     void showMessage(QString msg);
 private:
-    void fillStockTable();
+      void fillStockTable();
 };
 
 #endif // CLSDBCREATETABLES_H

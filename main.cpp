@@ -21,13 +21,13 @@ int main(int argc, char *argv[])
 //    QEastMoneyBlockThread *mBlockThread = new QEastMoneyBlockThread(&a);
 //    mBlockThread->start();
 
+
+    clsDBOp::instance()->isOpen();
+
     clsMainWindow w;
     w.show();
 
-   clsDBOp::instance()->isOpen();
 
-   clsDBCreateTables * db = new clsDBCreateTables();
-   db->createStockTable();
-   db->createBlockTable();
+
     return a.exec();
 }

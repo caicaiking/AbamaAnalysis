@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QMap>
 #include <QList>
+#include "clsDBCreateTables.h"
+#include "clsDBOp.h"
 
 
 #include "blockdata.h"
@@ -61,6 +63,8 @@ private:
     QMap<QString, QStringList>  mShareFHSPList;
     int     mTotalStkCount;
     QMap<int, BlockDataList> mBlockRealInfo;
+
+    clsDBCreateTables *db;
 };
 
 #endif // QEASTMONEYBLOCKTHREAD_H

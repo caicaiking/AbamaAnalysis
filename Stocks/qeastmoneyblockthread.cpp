@@ -30,6 +30,9 @@ QEastMoneyBlockThread::QEastMoneyBlockThread(QObject *parent) : QThread(parent)
     qRegisterMetaType<BlockDataList>("const BlockDataList&");
     //设定分红送配的日期
     Profiles::instance()->setDefault(REPORT, BLOCK_TIME, "2016-12-31");
+
+    db = new clsDBCreateTables(this);
+    connect(db,SIGNAL(showMessage(QString)),this,SIGNAL(signalUpdateMsg(QString)));
 }
 
 QEastMoneyBlockThread::~QEastMoneyBlockThread()
@@ -183,7 +186,8 @@ void QEastMoneyBlockThread::GetBlockShares()
     qDebug()<<"last:"<<lastUpdate;
     QDateTime lastDate = QDateTime::fromTime_t(lastUpdate);
     bool needUpdate = true;
-    if(lastDate.date() == QExchangeDataManage::instance()->GetLatestActiveDay(QDate::currentDate()))
+    if(lastDate.date() ==
+            QExchangeDataManage::instance()->GetLatestActiveDay(QDate::currentDate()))
     {
         //读取配置
         QStringList secs = Profiles::instance()->getAllSections();
@@ -285,6 +289,11 @@ void QEastMoneyBlockThread::GetBlockShares()
 
     }
 
+    //在这儿创建 板块数据库和股票代码数据库
+
+    db->fillBlockTable(mBlockDataList);
+
+
 FUNC_END:
 
 
@@ -295,6 +304,9 @@ FUNC_END:
         mStkCodesList.append(Profiles::instance()->value(group, "codes").toStringList());
     }
     mTotalStkCount = mStkCodesList.length();
+
+    db->createDetaiTable();
+    db->fillDetailTable(mStkCodesList);
 
     //开启线程将股本数据写入文件
     //开始启动线程然后获取信息,每个线程获取100个股票代码信息
