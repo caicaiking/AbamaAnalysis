@@ -207,3 +207,8 @@ void clsDBCreateTables::createCodesTable(QString code)
 
     q.exec(sql);
 }
+
+void clsDBCreateTables::fillCodeTable(QString code)
+{
+
+}

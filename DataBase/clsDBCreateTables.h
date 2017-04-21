@@ -23,6 +23,7 @@ public:
       bool createDetaiTable();
       void fillDetailTable(const QStringList mStkCodesList);
       void createCodesTable(QString code);
+      void fillCodeTable(QString code);
 signals:
     void showMessage(QString msg);
 private:

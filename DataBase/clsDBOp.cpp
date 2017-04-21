@@ -1,6 +1,7 @@
 #include "clsDBOp.h"
 #include <QMutex>
 #include <QMutexLocker>
+#include <QApplication>
 
 clsDBOp * clsDBOp::mInstance =0;
 clsDBOp::clsRmDBOp clsDBOp::rmDbOp;
@@ -9,7 +10,7 @@ clsDBOp::clsRmDBOp clsDBOp::rmDbOp;
 clsDBOp::clsDBOp(QObject *parent) : QObject(parent)
 {
     db =QSqlDatabase::addDatabase ("QSQLITE");
-    db.setDatabaseName("StockData.db");
+    db.setDatabaseName(qApp->applicationDirPath() + "/StockData.db");
     db.open();
 
 }
