@@ -276,16 +276,16 @@ void QEastMoneyBlockThread::GetBlockShares()
         mgr->deleteLater();
 
         //更新所有股票的板块信息
-        slotUpdateFHSPInfo();
-        int index = 0;
-        int total = mShareBlockList.keys().length();
-        foreach (QString code, mShareBlockList.keys()) {
-            emit signalUpdateMsg(QString("%1:%2/%3").arg(tr("正在更新板块信息")).arg(++index).arg(total));
-            StkInfoFileManage *filemgr = new StkInfoFileManage(code.right(6));
-            filemgr->setValue("Block", "names", mShareBlockList[code]);
-            filemgr->setValue("FHSP", "Content", mShareFHSPList[code]);
-            filemgr->deleteLater();
-        }
+//        slotUpdateFHSPInfo();
+//        int index = 0;
+//        int total = mShareBlockList.keys().length();
+//        foreach (QString code, mShareBlockList.keys()) {
+//            emit signalUpdateMsg(QString("%1:%2/%3").arg(tr("正在更新板块信息")).arg(++index).arg(total));
+//            StkInfoFileManage *filemgr = new StkInfoFileManage(code.right(6));
+//            filemgr->setValue("Block", "names", mShareBlockList[code]);
+//            filemgr->setValue("FHSP", "Content", mShareFHSPList[code]);
+//            filemgr->deleteLater();
+//        }
 
     }
 
@@ -313,6 +313,7 @@ FUNC_END:
     //开启线程将股本数据写入文件
     //开始启动线程然后获取信息,每个线程获取100个股票代码信息
     int nthread = (mStkCodesList.length() + 99 ) / 100;
+
     qDebug()<<"thread count:"<<nthread;
     for(int i=0; i<nthread; i++)
     {
@@ -378,7 +379,7 @@ void QEastMoneyBlockThread::slotUpdateFHSPInfo()
     QString date = Profiles::instance()->value(REPORT, BLOCK_TIME).toString();
     QString url("http://data.eastmoney.com/DataCenter_V3/yjfp/getlist.ashx?js=var vWLdLOFe&pagesize=5000&page=1&sr=-1&sortType=SZZBL&mtk=%C8%AB%B2%BF%B9%C9%C6%B1&filter=(ReportingPeriod=^%1^)&rt=49499306");
     QString wkURL = url.arg(date);
-    qDebug()<<"wkURL:"<<wkURL;
+    //qDebug()<<"wkURL:"<<wkURL;
     QNetworkReply *reply  = mgr->get(QNetworkRequest(wkURL));
     if(!reply)
     {

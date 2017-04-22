@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "BlockData.h"
+#include "clsSingleStockData.h"
 
 struct DetailSTR
 {
@@ -23,7 +24,8 @@ public:
       bool createDetaiTable();
       void fillDetailTable(const QStringList mStkCodesList);
       void createCodesTable(QString code);
-      void fillCodeTable(QString code);
+      void fillCodeTable(QString code, SDList list);
+      QDate getCodeLatestDate(QString code);
 signals:
     void showMessage(QString msg);
 private:

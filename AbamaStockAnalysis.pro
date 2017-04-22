@@ -60,7 +60,8 @@ HEADERS += \
     Stocks/stockdata.h \
     DataBase/clsDBOp.h \
     Windows/clsMainWindow.h \
-    DataBase/clsDBCreateTables.h
+    DataBase/clsDBCreateTables.h \
+    Stocks/clsSingleStockData.h
 
 FORMS += \
     Windows/clsMainWindow.ui

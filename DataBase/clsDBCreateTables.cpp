@@ -5,7 +5,8 @@
 #include <QObject>
 #include <QMapIterator>
 #include <QTime>
-
+#include <QMutex>
+#include <QMutexLocker>
 clsDBCreateTables::clsDBCreateTables(QObject *parent) :QObject(parent)
 {
 
@@ -194,21 +195,85 @@ void clsDBCreateTables::createCodesTable(QString code)
 {
     QSqlQuery q;
     QString sql=QString("CREATE TABLE IF NOT EXISTS %1 ("
-                        "StNumber	NUMERIC NOT NULL UNIQUE,"
+                        "STDATE	TEXT NOT NULL UNIQUE,"
                         "Hi	NUMERIC,"
                         "Lo	NUMERIC,"
                         "O	NUMERIC,"
                         "C	NUMERIC,"
                         "LC	NUMERIC,"
-                        "MA20	NUMERIC,"
-                        "MA60 NUMERIC,"
-                        "WK20	NUMERIC,"
-                        "PRIMARY KEY(StNumber))").arg(code);
+                        "CJL	NUMERIC,"
+                        "CJE NUMERIC,"
+                        "ZSZ	NUMERIC,"
+                        "LTSZ	NUMERIC,"
+                        "ZDF	NUMERIC,"
+                        "PRIMARY KEY(STDATE))").arg(code);
 
+    //qDebug()<< sql;
     q.exec(sql);
 }
 
-void clsDBCreateTables::fillCodeTable(QString code)
+QDate clsDBCreateTables::getCodeLatestDate(QString code)
 {
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+    QString sql = QString ("select STDATE from %1 order by STDATE  desc").arg(code);
+
+    //qDebug()<< sql;
+    QSqlQuery q;
+    if(q.exec(sql))
+    {
+        if(q.next())
+        {
+           // qDebug()<<q.value(0).toString();
+            return q.value(0).toDate();
+        }
+        else
+        {
+            return QDate(2016,12,31);
+        }
+    }
+    else
+    {
+        return QDate(2016,12,31);
+    }
 
 }
+
+void clsDBCreateTables::fillCodeTable(QString code, SDList list)
+{
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+
+    clsDBOp::instance()->getDb().transaction();
+
+    QSqlQuery q;
+
+    QString sql = QString("INSERT INTO %1 (STDATE,Hi,Lo,O,C,LC,CJL,CJE,ZSZ,LTSZ,ZDF) VALUES "
+                          "('%2',%3,%4,%5,%6,%7,%8,%9,%10,%11,%12)");
+
+    for(int i =0; i<list.length(); i++)
+    {
+        QString sql2 = sql.arg(QString(code))
+                .arg(QString(list.at(i).StNumber))
+                .arg( list.at(i).Hi)
+                .arg(list.at(i).Lo)
+                .arg(list.at(i).o)
+                .arg(list.at(i).c)
+                .arg(list.at(i).lc)
+                .arg(list.at(i).cjl)
+                .arg(list.at(i).cje)
+                .arg(list.at(i).zsz)
+                .arg(list.at(i).ltsz)
+                .arg(list.at(i).zdf);
+
+        q.exec(sql2);
+    }
+
+    emit showMessage(tr("正在写表格：%1").arg(code));
+    qDebug()<<tr("正在写表格：%1").arg(code);
+    clsDBOp::instance()->getDb().commit();
+
+}
+
