@@ -196,16 +196,15 @@ void clsDBCreateTables::createCodesTable(QString code)
     QSqlQuery q;
     QString sql=QString("CREATE TABLE IF NOT EXISTS %1 ("
                         "STDATE	TEXT NOT NULL UNIQUE,"
-                        "Hi	NUMERIC,"
-                        "Lo	NUMERIC,"
                         "O	NUMERIC,"
                         "C	NUMERIC,"
-                        "LC	NUMERIC,"
+                        "ZD NUMERIC,"
+                        "ZDF NUMERIC,"
+                        "Lo	NUMERIC,"
+                        "Hi	NUMERIC,"
                         "CJL	NUMERIC,"
                         "CJE NUMERIC,"
-                        "ZSZ	NUMERIC,"
-                        "LTSZ	NUMERIC,"
-                        "ZDF	NUMERIC,"
+                        "HSL	NUMERIC,"
                         "PRIMARY KEY(STDATE))").arg(code);
 
     //qDebug()<< sql;
@@ -225,7 +224,7 @@ QDate clsDBCreateTables::getCodeLatestDate(QString code)
     {
         if(q.next())
         {
-           // qDebug()<<q.value(0).toString();
+            // qDebug()<<q.value(0).toString();
             return q.value(0).toDate();
         }
         else
@@ -240,7 +239,7 @@ QDate clsDBCreateTables::getCodeLatestDate(QString code)
 
 }
 
-void clsDBCreateTables::fillCodeTable(QString code, SDList list)
+void clsDBCreateTables::fillCodeTable(QString code, SingleStockDataList list)
 {
     static QMutex mutex;
     QMutexLocker locker(&mutex);
@@ -250,23 +249,22 @@ void clsDBCreateTables::fillCodeTable(QString code, SDList list)
 
     QSqlQuery q;
 
-    QString sql = QString("INSERT INTO %1 (STDATE,Hi,Lo,O,C,LC,CJL,CJE,ZSZ,LTSZ,ZDF) VALUES "
-                          "('%2',%3,%4,%5,%6,%7,%8,%9,%10,%11,%12)");
+    QString sql = QString("INSERT INTO %1 (STDATE,O,C,ZD,ZDF,Lo,Hi,CJL,CJE,HSL) VALUES "
+                          "('%2',%3,%4,%5,%6,%7,%8,%9,%10,%11)");
 
     for(int i =0; i<list.length(); i++)
     {
         QString sql2 = sql.arg(QString(code))
-                .arg(QString(list.at(i).StNumber))
-                .arg( list.at(i).Hi)
-                .arg(list.at(i).Lo)
-                .arg(list.at(i).o)
-                .arg(list.at(i).c)
-                .arg(list.at(i).lc)
+                .arg(QString(list.at(i).date))
+                .arg( list.at(i).open)
+                .arg(list.at(i).close)
+                .arg(list.at(i).zd)
+                .arg(list.at(i).zdf)
+                .arg(list.at(i).low)
+                .arg(list.at(i).high)
                 .arg(list.at(i).cjl)
                 .arg(list.at(i).cje)
-                .arg(list.at(i).zsz)
-                .arg(list.at(i).ltsz)
-                .arg(list.at(i).zdf);
+                .arg(list.at(i).hsl);
 
         q.exec(sql2);
     }

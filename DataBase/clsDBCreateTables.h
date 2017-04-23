@@ -24,7 +24,7 @@ public:
       bool createDetaiTable();
       void fillDetailTable(const QStringList mStkCodesList);
       void createCodesTable(QString code);
-      void fillCodeTable(QString code, SDList list);
+      void fillCodeTable(QString code, SingleStockDataList list);
       QDate getCodeLatestDate(QString code);
 signals:
     void showMessage(QString msg);

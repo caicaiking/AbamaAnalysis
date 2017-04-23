@@ -1,10 +1,12 @@
 #include "qeastmoneystockinfothread.h"
 #include <QDateTime>
 #include <QNetworkAccessManager>
-
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QNetworkReply>
 #include <QEventLoop>
 #include <QDebug>
+#include <QJsonParseError>
 #include "stkmktcap.h"
 #include "stockdata.h"
 #include "stkinfofilemanage.h"
@@ -28,14 +30,14 @@ void qeastmoneystockinfothread::setStockCodeList(const QStringList &codes)
 
 void qeastmoneystockinfothread::run()
 {
-//    MktCapFile::instance()->setValue("Update", "time", QDateTime::currentDateTime().toString("yyyy-MM-dd"));
+    //    MktCapFile::instance()->setValue("Update", "time", QDateTime::currentDateTime().toString("yyyy-MM-dd"));
 
 
     //下载前10天的数据，如果数据 下载 历史数据从2016年12月30开始
     QNetworkAccessManager *mgr = new QNetworkAccessManager;
-    foreach (QString code, mStockcodeList) {
-
-        SDList sdList;
+    foreach (QString code, mStockcodeList)
+    {
+        SingleStockDataList sdList;
         QString sdCode = code;
 
         sdList.clear();
@@ -43,7 +45,7 @@ void qeastmoneystockinfothread::run()
         emit sendUpdateProgress(1, 1);
         bool update = true;
 
-         clsDBCreateTables * db = new clsDBCreateTables();
+        clsDBCreateTables * db = new clsDBCreateTables();
 
         //查询数据库，找到最近的一天
         QDate lastUpdate = db->getCodeLatestDate(sdCode);
@@ -59,20 +61,17 @@ void qeastmoneystockinfothread::run()
 
         qDebug()<<"Start date: "<< start.toString("yyyy-MM-dd")<<"\tStop date: "<< end.toString("yyyy-MM-dd");
         code = code.right(6);
-        if(code.left(1) == "6" || code.left(1) == "5")
-        {
-            code = "0" + code;
-        } else
-        {
-            code = "1" + code;
-        }
-        //http://quotes.money.163.com/service/chddata.html?code=1000002&start=19910129&end=20161006&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP
-        QString wkURL = QString("http://quotes.money.163.com/service/chddata.html?"
-                                "code=%1&start=%2&end=%3&"
-                                "fields=TCLOSE;LCLOSE;VOTURNOVER;VATURNOVER;TCAP;MCAP;PCHG;TCLOSE;HIGH;LOW;TOPEN;LCLOSE")
-                .arg(code).arg(start.toString("yyyyMMdd")).arg(end.toString("yyyyMMdd"));
 
-        qDebug()<< "wkURL: \t" << wkURL;
+        //http://q.stock.sohu.com/hisHq?code=cn_601766&start=20170101&end=20170422
+        //使用搜狐的数据源， 发现163的不太好用。
+        QString wkURL = QString ("http://q.stock.sohu.com/hisHq?"
+                                 "code=cn_%1&start=%2&end=%3")
+                .arg(code)
+                .arg(start.toString("yyyyMMdd"))
+                .arg(end.toString("yyyyMMdd"));
+
+
+        //qDebug()<< "wkURL: \t" << wkURL;
         QNetworkReply *reply  = mgr->get(QNetworkRequest(wkURL));
         if(!reply)
         {
@@ -88,46 +87,69 @@ void qeastmoneystockinfothread::run()
             continue;
         }
         //开始解析数据
-        int index = -1;
+
         QByteArray bytes;
 
-
-        while((bytes = reply->readLine()).length())
+        bytes = reply->readAll();
+        if(bytes.length() >0)
         {
-            index++;
-            if(index == 0) continue;
-            QString result = QString::fromLocal8Bit(bytes.data());
-            if( !result.isEmpty() )
+            QString myData = bytes;
+
+            QJsonParseError error;
+            QJsonDocument jsDocument = QJsonDocument::fromJson(myData.toUtf8(),&error);
+
+            if(error.error == QJsonParseError::NoError)
             {
-                QStringList blockInfoList = result.split(QRegExp("[,\"'\s\r\t]"), QString::SkipEmptyParts);
-
-                if(blockInfoList.length() >=15)
+                if(!(jsDocument.isNull() || jsDocument.isEmpty()))
                 {
+                    if(jsDocument.isArray())
+                    {
+                        QJsonArray arr = jsDocument.array();
 
-                    QString wkDate = blockInfoList[0];
+                        for(int i=0; i< arr.size(); i++)
+                        {
+                            int status;
+                            QString code;
+                            QJsonArray hq;
+                            QJsonObject jv =arr.at(i).toObject();
+                            status=jv["status"].toInt();
+                            code =jv["code"].toString();
+                            qDebug()<<"Status "<< status << " code " <<code;
 
-                    clsSingleStockData tmpData;
-                    tmpData.StNumber =wkDate;
-                    tmpData.c=blockInfoList[10].toDouble();
-                    tmpData.cje = blockInfoList[6].toDouble();
-                    tmpData.cjl = blockInfoList[5].toDouble();
-                    tmpData.Hi = blockInfoList[11].toDouble();
-                    tmpData.lc = blockInfoList[14].toDouble();
-                    tmpData.Lo = blockInfoList[12].toDouble();
-                    tmpData.ltsz = blockInfoList[8].toDouble();
-                    tmpData.o = blockInfoList[13].toDouble();
-                    tmpData.zdf = blockInfoList[9].toDouble();
-                    tmpData.zsz = blockInfoList[7].toDouble();
+                            //qDebug()<<"Code "<<code;
+                            hq =jv["hq"].toArray();
+                            //qDebug()<<"hq "<<hq ;
 
-                    sdList.append(tmpData);
+                            for(int j=0; j< hq.size(); j++)
+                            {
+                                QJsonArray singleDay = hq.at(j).toArray();
+                                if(singleDay.size()>=10)
+                                {
+                                    SingleStockData tmp;
+                                    tmp.date = singleDay.at(0).toString();
+                                    tmp.open = singleDay.at(1).toString().toDouble();
+                                    tmp.close = singleDay.at(2).toString().toDouble();
+                                    tmp.zd = singleDay.at(3).toString().toDouble();
+                                    tmp.zdf= singleDay.at(4).toString().remove("%").toDouble()/100.00;
+                                    tmp.low = singleDay.at(5).toString().toDouble();
+                                    tmp.high = singleDay.at(6).toString().toDouble();
+                                    tmp.cjl = singleDay.at(7).toString().toDouble();
+                                    tmp.cje = singleDay.at(8).toString().toDouble();
+                                    tmp.hsl = singleDay.at(9).toString().remove("%").toDouble()/100.0;
+                                    sdList.append(tmp);
+                                }
+                            }
 
+
+                        }
+                    }
                 }
             }
 
         }
 
-
-        db->fillCodeTable(sdCode, sdList);
+        if(sdList.length()>0)
+            db->fillCodeTable(sdCode, sdList);
         reply->deleteLater();
     }
     qDebug()<<"stk info update finished";
