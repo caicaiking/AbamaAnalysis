@@ -30,14 +30,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     Stocks/BlockData.cpp \
-    Stocks/profiles.cpp \
     Stocks/qeastmoneyblockthread.cpp \
     Stocks/qeastmoneystockinfothread.cpp \
     Stocks/qexchangedatamanage.cpp \
-    Stocks/qsinastkinfothread.cpp \
-    Stocks/stkinfofilemanage.cpp \
-    Stocks/stkmktcap.cpp \
-    Stocks/stockdata.cpp \
     DataBase/clsDBOp.cpp \
     Windows/clsMainWindow.cpp \
     DataBase/clsDBCreateTables.cpp
@@ -50,14 +45,9 @@ DESTDIR =$$PWD/Exe/
 HEADERS += \
     Stocks/basedata.h \
     Stocks/BlockData.h \
-    Stocks/profiles.h \
     Stocks/qeastmoneyblockthread.h \
     Stocks/qeastmoneystockinfothread.h \
     Stocks/qexchangedatamanage.h \
-    Stocks/qsinastkinfothread.h \
-    Stocks/stkinfofilemanage.h \
-    Stocks/stkmktcap.h \
-    Stocks/stockdata.h \
     DataBase/clsDBOp.h \
     Windows/clsMainWindow.h \
     DataBase/clsDBCreateTables.h \

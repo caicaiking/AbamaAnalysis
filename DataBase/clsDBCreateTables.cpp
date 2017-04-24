@@ -12,6 +12,33 @@ clsDBCreateTables::clsDBCreateTables(QObject *parent) :QObject(parent)
 
 }
 
+
+
+bool clsDBCreateTables::createUpdateTable()
+{
+    //emit showMessage(tr("创建更新表格"));
+
+    QString sql = "CREATE TABLE IF NOT EXISTS updateRecord "
+                  "("
+                  "ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, "
+                  "updateTime text NOT NULL DEFAULT '' "
+                  ");";
+
+
+    QSqlQuery q;
+
+    if(!clsDBOp::instance()->isOpen())
+        return false;
+
+    q.exec(sql);
+    if(!q.isActive())
+    {
+        // qDebug()<<"Create stocks table failed!";
+        return false;
+    }
+    return true;
+}
+
 bool clsDBCreateTables::createStockTable()
 {
     emit showMessage(tr("创建股票总表"));
@@ -80,6 +107,33 @@ bool clsDBCreateTables::createBlockTable()
     }
     return true;
 }
+
+void clsDBCreateTables::getBlockTable( QMap<QString,BlockData>  &data)
+{
+    data.clear();
+
+    QSqlQuery q;
+    QString sql = "Select * from blocks order by id asc";
+
+    if(!q.exec(sql))
+    {
+        return;
+    }
+
+
+    while(q.next())
+    {
+        BlockData tmp;
+        tmp.code = q.value(0).toString();
+        tmp.name =q.value(1).toString();
+        tmp.stklist = q.value(3).toString().split(",",QString::SkipEmptyParts);
+        data[tmp.code]= tmp;
+    }
+
+
+
+}
+
 
 void clsDBCreateTables::fillBlockTable(const QMap<QString, BlockData> data)
 {
@@ -165,6 +219,8 @@ bool clsDBCreateTables::createDetaiTable()
 
 void clsDBCreateTables::fillDetailTable(const QStringList mStkCodesList)
 {
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
 
     clsDBOp::instance()->getDb().transaction();
 
@@ -193,6 +249,8 @@ void clsDBCreateTables::fillDetailTable(const QStringList mStkCodesList)
 
 void clsDBCreateTables::createCodesTable(QString code)
 {
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
     QSqlQuery q;
     QString sql=QString("CREATE TABLE IF NOT EXISTS %1 ("
                         "STDATE	TEXT NOT NULL UNIQUE,"
@@ -209,6 +267,37 @@ void clsDBCreateTables::createCodesTable(QString code)
 
     //qDebug()<< sql;
     q.exec(sql);
+}
+
+void clsDBCreateTables::setUpdateTime(QDate t)
+{
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+    QString date = t.toString("yyyy-MM-dd");
+
+    if(date  == getLatestUpdate())
+        return ;
+    QString sql = QString("INSERT INTO updateRecord  (updatetime) values ('%1')").arg(date);
+
+    QSqlQuery q;
+    q.exec(sql);
+}
+
+QString clsDBCreateTables::getLatestUpdate()
+{
+    static QMutex mutex;
+    QMutexLocker locker(&mutex);
+
+    QString sql = "select updateTime from updateRecord order by updateTime desc";
+    QSqlQuery q;
+    if(q.exec(sql))
+    {
+        if(q.next())
+            return q.value(0).toString();
+    }
+
+    return "2016-12-31";
 }
 
 QDate clsDBCreateTables::getCodeLatestDate(QString code)
@@ -270,7 +359,7 @@ void clsDBCreateTables::fillCodeTable(QString code, SingleStockDataList list)
     }
 
     emit showMessage(tr("正在写表格：%1").arg(code));
-    qDebug()<<tr("正在写表格：%1").arg(code);
+    //qDebug()<<tr("正在写表格：%1").arg(code);
     clsDBOp::instance()->getDb().commit();
 
 }

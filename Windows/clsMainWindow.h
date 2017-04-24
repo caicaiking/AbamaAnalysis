@@ -3,7 +3,7 @@
 
 #include "ui_clsMainWindow.h"
 
-#include "qsinastkinfothread.h"
+
 #include "qeastmoneyblockthread.h"
 
 class clsMainWindow : public QMainWindow, private Ui::clsMainWindow
@@ -14,7 +14,7 @@ public:
     explicit clsMainWindow(QWidget *parent = 0);
 
 
-
+~clsMainWindow();
 private:
     QEastMoneyBlockThread *mBlockThread;
 };

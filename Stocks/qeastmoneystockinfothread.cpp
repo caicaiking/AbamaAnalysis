@@ -7,20 +7,16 @@
 #include <QEventLoop>
 #include <QDebug>
 #include <QJsonParseError>
-#include "stkmktcap.h"
-#include "stockdata.h"
-#include "stkinfofilemanage.h"
+
 #include "clsSingleStockData.h"
 #include "clsDBCreateTables.h"
 
 qeastmoneystockinfothread::qeastmoneystockinfothread(QThread *parent) : QThread(parent)
 {
-
 }
 
 qeastmoneystockinfothread::~qeastmoneystockinfothread()
 {
-
 }
 
 void qeastmoneystockinfothread::setStockCodeList(const QStringList &codes)
@@ -33,7 +29,7 @@ void qeastmoneystockinfothread::run()
     //    MktCapFile::instance()->setValue("Update", "time", QDateTime::currentDateTime().toString("yyyy-MM-dd"));
 
 
-    //下载前10天的数据，如果数据 下载 历史数据从2016年12月30开始
+    //下载 历史数据从2016年12月30开始
     QNetworkAccessManager *mgr = new QNetworkAccessManager;
     foreach (QString code, mStockcodeList)
     {
@@ -59,7 +55,7 @@ void qeastmoneystockinfothread::run()
         QDateTime start = QDateTime(lastUpdate);
         QDateTime end = QDateTime::currentDateTime();
 
-        qDebug()<<"Start date: "<< start.toString("yyyy-MM-dd")<<"\tStop date: "<< end.toString("yyyy-MM-dd");
+       // qDebug()<<"Start date: "<< start.toString("yyyy-MM-dd")<<"\tStop date: "<< end.toString("yyyy-MM-dd");
         code = code.right(6);
 
         //http://q.stock.sohu.com/hisHq?code=cn_601766&start=20170101&end=20170422
@@ -93,7 +89,7 @@ void qeastmoneystockinfothread::run()
         bytes = reply->readAll();
         if(bytes.length() >0)
         {
-            QString myData = bytes;
+            QString myData =QString(bytes);
 
             QJsonParseError error;
             QJsonDocument jsDocument = QJsonDocument::fromJson(myData.toUtf8(),&error);
@@ -114,7 +110,7 @@ void qeastmoneystockinfothread::run()
                             QJsonObject jv =arr.at(i).toObject();
                             status=jv["status"].toInt();
                             code =jv["code"].toString();
-                            qDebug()<<"Status "<< status << " code " <<code;
+                            //qDebug()<<"Status "<< status << " code " <<code;
 
                             //qDebug()<<"Code "<<code;
                             hq =jv["hq"].toArray();
@@ -139,8 +135,6 @@ void qeastmoneystockinfothread::run()
                                     sdList.append(tmp);
                                 }
                             }
-
-
                         }
                     }
                 }
@@ -152,7 +146,7 @@ void qeastmoneystockinfothread::run()
             db->fillCodeTable(sdCode, sdList);
         reply->deleteLater();
     }
-    qDebug()<<"stk info update finished";
+   // qDebug()<<"stk info update finished";
     mgr->deleteLater();
 
     this->exit();
@@ -172,8 +166,6 @@ QDate qeastmoneystockinfothread::lastActiveDay()
     {
         date = date.addDays(-1);
     }
-    qDebug()<<date;
+    //qDebug()<<date;
     return date;
 }
-
-

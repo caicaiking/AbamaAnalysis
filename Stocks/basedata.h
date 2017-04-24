@@ -30,6 +30,4 @@ public:
     }
 };
 
-Q_DECLARE_METATYPE(BaseData)
-
 #endif // BASEDATA_H

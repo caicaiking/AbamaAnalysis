@@ -39,5 +39,5 @@ public:
 
 };
 
-Q_DECLARE_METATYPE(BlockData)
+
 #endif // BLOCKDATA_H

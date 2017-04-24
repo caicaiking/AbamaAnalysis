@@ -26,6 +26,10 @@ public:
       void createCodesTable(QString code);
       void fillCodeTable(QString code, SingleStockDataList list);
       QDate getCodeLatestDate(QString code);
+      static bool createUpdateTable();
+      QString getLatestUpdate();
+      void setUpdateTime(QDate t);
+      void getBlockTable(QMap<QString, BlockData> &data);
 signals:
     void showMessage(QString msg);
 private:

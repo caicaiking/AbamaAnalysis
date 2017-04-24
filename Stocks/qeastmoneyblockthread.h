@@ -35,7 +35,6 @@ public:
 
 protected:
     void run();
-    void RealtimeBlockInfo();
     void GetBlockShares();
     void GetShares(const QString &pBlockCode, QList<QString>& codelist);
 
@@ -45,13 +44,10 @@ signals:
     void    sendStkinfoUpdateProgress(int cur, int total);
     void    signalUpdateMsg(const QString& msg);
 public slots:
-    void    setOptType(BLOCK_OPT_TYPE type);
-    void    setSortRule(BLOCK_DISPLAY_RULE rule);
-    void    reverseSortRule();
-    void    SetUpdateBlockCodes(bool pUpdate=false);
+
     void    slotWorkThreadFinished();
     void    slotStkCodeUpdateFinish(int cur, int total);
-    void    slotUpdateFHSPInfo();
+
 
 private:
     int         mSortRule;
