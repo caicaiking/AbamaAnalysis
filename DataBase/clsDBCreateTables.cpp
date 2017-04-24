@@ -297,7 +297,7 @@ QString clsDBCreateTables::getLatestUpdate()
             return q.value(0).toString();
     }
 
-    return "2016-12-31";
+    return "2015-12-31";
 }
 
 QDate clsDBCreateTables::getCodeLatestDate(QString code)
@@ -318,12 +318,12 @@ QDate clsDBCreateTables::getCodeLatestDate(QString code)
         }
         else
         {
-            return QDate(2016,12,31);
+            return QDate(2015,12,31);
         }
     }
     else
     {
-        return QDate(2016,12,31);
+        return QDate(2015,12,31);
     }
 
 }

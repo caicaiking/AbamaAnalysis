@@ -26,9 +26,6 @@ void qeastmoneystockinfothread::setStockCodeList(const QStringList &codes)
 
 void qeastmoneystockinfothread::run()
 {
-    //    MktCapFile::instance()->setValue("Update", "time", QDateTime::currentDateTime().toString("yyyy-MM-dd"));
-
-
     //下载 历史数据从2016年12月30开始
     QNetworkAccessManager *mgr = new QNetworkAccessManager;
     foreach (QString code, mStockcodeList)
@@ -49,6 +46,8 @@ void qeastmoneystockinfothread::run()
         if(lastUpdate == lastActiveDay())
             update = false;
 
+
+
         if(update == false) continue;
         //开始更新
 
@@ -68,6 +67,7 @@ void qeastmoneystockinfothread::run()
 
 
         //qDebug()<< "wkURL: \t" << wkURL;
+
         QNetworkReply *reply  = mgr->get(QNetworkRequest(wkURL));
         if(!reply)
         {
@@ -75,6 +75,9 @@ void qeastmoneystockinfothread::run()
         }
         QEventLoop loop; // 使用事件循环使得网络通讯同步进行
         connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+
+
+
         loop.exec(); // 进入事件循环， 直到reply的finished()信号发出， 这个语句才能退出
         if(reply->error())
         {
@@ -87,6 +90,8 @@ void qeastmoneystockinfothread::run()
         QByteArray bytes;
 
         bytes = reply->readAll();
+
+        //qDebug()<<bytes;
         if(bytes.length() >0)
         {
             QString myData =QString(bytes);

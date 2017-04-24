@@ -105,6 +105,7 @@ void QEastMoneyBlockThread::GetBlockShares()
     {
         //读取配置已经存在的Block表格
         db->getBlockTable(mBlockDataList);
+        this->exit(0);
     }
     else
     {
@@ -192,7 +193,7 @@ void QEastMoneyBlockThread::GetBlockShares()
 
         //开启线程将股本数据写入文件
         //开始启动线程然后获取信息,每个线程获取100个股票代码信息
-        int nthread = (mStkCodesList.length() + 99 ) / 100;
+        int nthread = (mStkCodesList.length()+99) / 100;
 
         // qDebug()<<"thread count:"<<nthread;
         for(int i=0; i<nthread; i++)
@@ -238,7 +239,7 @@ void QEastMoneyBlockThread::slotWorkThreadFinished()
     }
 }
 
-void QEastMoneyBlockThread::slotStkCodeUpdateFinish(int cur, int total)
+void QEastMoneyBlockThread::slotStkCodeUpdateFinish(int cur, int /*total*/)
 {
     static int wkindex = 1;
     emit signalUpdateMsg(QString("%1:%2/%3").arg(tr("正在更新股票信息")).arg(wkindex).arg(mTotalStkCount));
