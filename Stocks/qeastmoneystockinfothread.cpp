@@ -27,6 +27,8 @@ void qeastmoneystockinfothread::setStockCodeList(const QStringList &codes)
 void qeastmoneystockinfothread::run()
 {
     //下载 历史数据从2016年12月30开始
+
+    //qDebug()<<mStockcodeList.contains("sh600000");
     QNetworkAccessManager *mgr = new QNetworkAccessManager;
     foreach (QString code, mStockcodeList)
     {
@@ -36,19 +38,13 @@ void qeastmoneystockinfothread::run()
         sdList.clear();
 
         emit sendUpdateProgress(1, 1);
-        bool update = true;
+
 
         clsDBCreateTables * db = new clsDBCreateTables();
 
         //查询数据库，找到最近的一天
         QDate lastUpdate = db->getCodeLatestDate(sdCode);
 
-        if(lastUpdate == lastActiveDay())
-            update = false;
-
-
-
-        if(update == false) continue;
         //开始更新
 
         QDateTime start = QDateTime(lastUpdate);
@@ -66,7 +62,7 @@ void qeastmoneystockinfothread::run()
                 .arg(end.toString("yyyyMMdd"));
 
 
-        //qDebug()<< "wkURL: \t" << wkURL;
+       // qDebug()<< "wkURL: \t" << wkURL;
 
         QNetworkReply *reply  = mgr->get(QNetworkRequest(wkURL));
         if(!reply)
@@ -83,6 +79,7 @@ void qeastmoneystockinfothread::run()
         {
 
             reply->deleteLater();
+            qDebug()<<"Get his data erorr!";
             continue;
         }
         //开始解析数据
@@ -96,6 +93,7 @@ void qeastmoneystockinfothread::run()
         {
             QString myData =QString(bytes);
 
+            //qDebug()<< myData;
             QJsonParseError error;
             QJsonDocument jsDocument = QJsonDocument::fromJson(myData.toUtf8(),&error);
 
@@ -114,6 +112,8 @@ void qeastmoneystockinfothread::run()
                             QJsonArray hq;
                             QJsonObject jv =arr.at(i).toObject();
                             status=jv["status"].toInt();
+                            if(status==2)
+                                continue;
                             code =jv["code"].toString();
                             //qDebug()<<"Status "<< status << " code " <<code;
 

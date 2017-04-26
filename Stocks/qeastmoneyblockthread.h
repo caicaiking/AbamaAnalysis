@@ -45,20 +45,17 @@ signals:
     void    signalUpdateMsg(const QString& msg);
 public slots:
 
-    void    slotWorkThreadFinished();
-    void    slotStkCodeUpdateFinish(int cur, int total);
 
+signals:
+    void getBlockDataList(BlockDataMap x);
 
 private:
     int         mSortRule;
     int         mOptType;
-    QMap<QString,BlockData> mBlockDataList;
+   BlockDataMap mBlockDataList;
     bool        mUpdateBlockCodes;
-    QList<QThread*>     mWorkThreadList;
+
     QMap<QString, QStringList>  mShareBlockList;
-    QMap<QString, QStringList>  mShareFHSPList;
-    int     mTotalStkCount;
-    QMap<int, BlockDataList> mBlockRealInfo;
 
     clsDBCreateTables *db;
 };

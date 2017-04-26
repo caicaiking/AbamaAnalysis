@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 class clsDBOp : public QObject
 {
     Q_OBJECT
@@ -16,6 +17,7 @@ public:
     bool isOpen() const;
 
     QSqlDatabase getDb() const;
+
 
 signals:
 

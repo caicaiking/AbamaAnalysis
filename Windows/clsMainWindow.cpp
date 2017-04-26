@@ -12,6 +12,13 @@ clsMainWindow::clsMainWindow(QWidget *parent) :
     mBlockThread = new QEastMoneyBlockThread(this);
     connect(mBlockThread,SIGNAL(signalUpdateMsg(QString)),label,SLOT(setText(QString)));
     mBlockThread->start();
+
+    mStockHisThread = new clsStockHisThread(this);
+    connect(mStockHisThread,SIGNAL(signalUpdateMsg(QString)),label,SLOT(setText(QString)));
+    connect(mBlockThread,SIGNAL(getBlockDataList(BlockDataMap)),
+            mStockHisThread,SLOT(setShareBlockCode(BlockDataMap)));
+    connect(mBlockThread,SIGNAL(updateBlockCodesFinished()),
+            this,SLOT(startGetHisData()));
 }
 
 clsMainWindow::~clsMainWindow()
@@ -20,4 +27,9 @@ clsMainWindow::~clsMainWindow()
     {
         mBlockThread->quit();
     }
+}
+
+void clsMainWindow::startGetHisData()
+{
+    mStockHisThread->start();
 }

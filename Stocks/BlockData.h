@@ -39,5 +39,5 @@ public:
 
 };
 
-
+typedef QMap<QString, BlockData> BlockDataMap;
 #endif // BLOCKDATA_H

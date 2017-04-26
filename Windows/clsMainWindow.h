@@ -2,7 +2,7 @@
 #define CLSMAINWINDOW_H
 
 #include "ui_clsMainWindow.h"
-
+#include "clsStockHisThread.h"
 
 #include "qeastmoneyblockthread.h"
 
@@ -14,9 +14,12 @@ public:
     explicit clsMainWindow(QWidget *parent = 0);
 
 
-~clsMainWindow();
+    ~clsMainWindow();
+private slots:
+    void startGetHisData();
 private:
     QEastMoneyBlockThread *mBlockThread;
+    clsStockHisThread * mStockHisThread;
 };
 
 #endif // CLSMAINWINDOW_H

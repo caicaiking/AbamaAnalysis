@@ -35,7 +35,8 @@ SOURCES += \
     Stocks/qexchangedatamanage.cpp \
     DataBase/clsDBOp.cpp \
     Windows/clsMainWindow.cpp \
-    DataBase/clsDBCreateTables.cpp
+    DataBase/clsDBCreateTables.cpp \
+    Stocks/clsStockHisThread.cpp
 
 
 RC_FILE  =Icon.rc
@@ -51,7 +52,8 @@ HEADERS += \
     DataBase/clsDBOp.h \
     Windows/clsMainWindow.h \
     DataBase/clsDBCreateTables.h \
-    Stocks/clsSingleStockData.h
+    Stocks/clsSingleStockData.h \
+    Stocks/clsStockHisThread.h
 
 FORMS += \
     Windows/clsMainWindow.ui
