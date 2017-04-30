@@ -13,6 +13,7 @@
 #include <QJsonArray>
 #include "qexchangedatamanage.h"
 #include "clsDBCreateTables.h"
+#include <QDateTime>
 
 
 QString blockthread[4] = {"NONE", "DY", "HY", "GN"};
@@ -170,6 +171,7 @@ void QEastMoneyBlockThread::GetBlockShares()
 
         //在这儿创建 板块数据库和股票代码数据库
         db->fillBlockTable(mBlockDataList);
+        db->setUpdateTime(QDateTime::currentDateTime().addSecs(-1*18*60*60).date());
         mgr->deleteLater();
     }
     db->getBlockTable(mBlockDataList);

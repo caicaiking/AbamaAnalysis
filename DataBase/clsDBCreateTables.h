@@ -4,6 +4,7 @@
 #include <QObject>
 #include "BlockData.h"
 #include "clsSingleStockData.h"
+#include <QMutex>
 
 struct DetailSTR
 {
@@ -34,6 +35,9 @@ signals:
     void showMessage(QString msg);
 private:
       void fillStockTable();
+
+      static QMutex m_operation;
+      static QMutex m_detail;
 };
 
 #endif // CLSDBCREATETABLES_H

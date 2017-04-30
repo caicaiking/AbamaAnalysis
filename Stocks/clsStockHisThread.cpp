@@ -40,12 +40,12 @@ void clsStockHisThread::run()
 
     //开启线程将股本数据写入文件
     //开始启动线程然后获取信息,每个线程获取100个股票代码信息
-        int nthread = (mStkCodesList.length()+499) / 500;
+        int nthread = (mStkCodesList.length()+99) / 100;
 
         qDebug()<<"thread count:"<<nthread;
         for(int i=0; i<nthread; i++)
         {
-            QStringList wklist = mStkCodesList.mid(i*500, 500);
+            QStringList wklist = mStkCodesList.mid(i*100, 100);
             qeastmoneystockinfothread *infothr = new qeastmoneystockinfothread;
             infothr->setStockCodeList(wklist);
             connect(infothr, SIGNAL(finished()), this, SLOT(slotWorkThreadFinished()));

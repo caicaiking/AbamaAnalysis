@@ -7,6 +7,9 @@
 #include <QTime>
 #include <QMutex>
 #include <QMutexLocker>
+QMutex clsDBCreateTables::m_operation;
+QMutex clsDBCreateTables::m_detail;
+
 clsDBCreateTables::clsDBCreateTables(QObject *parent) :QObject(parent)
 {
 
@@ -17,6 +20,8 @@ clsDBCreateTables::clsDBCreateTables(QObject *parent) :QObject(parent)
 bool clsDBCreateTables::createUpdateTable()
 {
     //emit showMessage(tr("创建更新表格"));
+
+    QMutexLocker locker(&m_operation);
 
     QString sql = "CREATE TABLE IF NOT EXISTS updateRecord "
                   "("
@@ -41,6 +46,7 @@ bool clsDBCreateTables::createUpdateTable()
 
 bool clsDBCreateTables::createStockTable()
 {
+    QMutexLocker locker(&m_operation);
     emit showMessage(tr("创建股票总表"));
     QString sql = "CREATE TABLE IF NOT EXISTS stocks "
                   "("
@@ -66,6 +72,7 @@ bool clsDBCreateTables::createStockTable()
 
 void clsDBCreateTables::fillStockTable()
 {
+    QMutexLocker locker(&m_detail);
     QStringList stocks;
     QSqlQuery q;
     clsDBOp::instance()->getDb().transaction(); //开启事物处理
@@ -87,6 +94,7 @@ void clsDBCreateTables::fillStockTable()
 
 bool clsDBCreateTables::createBlockTable()
 {
+    QMutexLocker locker(&m_operation);
     QString sql = "CREATE TABLE IF NOT EXISTS blocks "
                   "("
                   "id integer PRIMARY KEY NOT NULL, "
@@ -110,6 +118,7 @@ bool clsDBCreateTables::createBlockTable()
 
 void clsDBCreateTables::getBlockTable( QMap<QString,BlockData>  &data)
 {
+    QMutexLocker locker(&m_operation);
     data.clear();
 
     QSqlQuery q;
@@ -137,6 +146,7 @@ void clsDBCreateTables::getBlockTable( QMap<QString,BlockData>  &data)
 
 void clsDBCreateTables::fillBlockTable(const QMap<QString, BlockData> data)
 {
+    QMutexLocker locker(&m_operation);
     QMapIterator<QString, BlockData> it(data);
     QMap<QString, DetailSTR> data1;
     while(it.hasNext())
@@ -197,6 +207,7 @@ void clsDBCreateTables::fillBlockTable(const QMap<QString, BlockData> data)
 
 bool clsDBCreateTables::createDetaiTable()
 {
+    QMutexLocker locker(&m_operation);
     emit showMessage(tr("创建股票代码一览表数据"));
     QString sql = "CREATE TABLE IF NOT EXISTS details "
                   "("
@@ -219,8 +230,7 @@ bool clsDBCreateTables::createDetaiTable()
 
 void clsDBCreateTables::fillDetailTable(const QStringList mStkCodesList)
 {
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker(&m_operation);
 
     clsDBOp::instance()->getDb().transaction();
 
@@ -249,8 +259,7 @@ void clsDBCreateTables::fillDetailTable(const QStringList mStkCodesList)
 
 void clsDBCreateTables::createCodesTable(QString code)
 {
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker(&m_detail);
     QSqlQuery q;
     QString sql=QString("CREATE TABLE IF NOT EXISTS %1 ("
                         "STDATE	TEXT NOT NULL UNIQUE,"
@@ -271,8 +280,7 @@ void clsDBCreateTables::createCodesTable(QString code)
 
 void clsDBCreateTables::setUpdateTime(QDate t)
 {
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker(&m_detail);
 
     QString date = t.toString("yyyy-MM-dd");
 
@@ -286,8 +294,7 @@ void clsDBCreateTables::setUpdateTime(QDate t)
 
 QString clsDBCreateTables::getLatestUpdate()
 {
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker(&m_operation);
 
     QString sql = "select updateTime from updateRecord order by updateTime desc";
     QSqlQuery q;
@@ -302,8 +309,7 @@ QString clsDBCreateTables::getLatestUpdate()
 
 QDate clsDBCreateTables::getCodeLatestDate(QString code)
 {
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
+    QMutexLocker locker(&m_operation);
 
     QString sql = QString ("select STDATE from %1 order by STDATE  desc").arg(code);
 
@@ -330,9 +336,7 @@ QDate clsDBCreateTables::getCodeLatestDate(QString code)
 
 void clsDBCreateTables::fillCodeTable(QString code, SingleStockDataList list)
 {
-    static QMutex mutex;
-    QMutexLocker locker(&mutex);
-
+    QMutexLocker locker(&m_operation);
 
     clsDBOp::instance()->getDb().transaction();
 
