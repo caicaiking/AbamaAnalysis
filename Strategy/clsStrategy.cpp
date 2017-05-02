@@ -1,6 +1,7 @@
 #include "clsStrategy.h"
 
-clsStrategy::clsStrategy()
+
+clsStrategy::clsStrategy(QObject *parent):QObject(parent)
 {
 
 }
