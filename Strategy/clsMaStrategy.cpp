@@ -14,7 +14,7 @@ QStringList clsMaStrategy::findStockCodes()
 
     QStringList codes = db->getStockCodes();
     QStringList stockCode;
-    int x;
+    int x=0;
     foreach (QString strCode , codes) {
         x++;
         SingleStockDataList tmp  = db->getStockData(strCode);
