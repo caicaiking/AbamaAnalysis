@@ -17,6 +17,8 @@ public:
     ~clsMainWindow();
 private slots:
     void startGetHisData();
+    void on_btnMa60_clicked();
+
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;

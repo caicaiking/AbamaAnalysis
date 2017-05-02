@@ -2,6 +2,7 @@
 #include "clsSingleStockData.h"
 #include "clsDBCreateTables.h"
 #include <QDateTime>
+#include <QApplication>
 clsMaStrategy::clsMaStrategy(QObject *parent): clsStrategy(parent)
 {
     db = new clsDBCreateTables(this);
@@ -13,8 +14,9 @@ QStringList clsMaStrategy::findStockCodes()
 
     QStringList codes = db->getStockCodes();
     QStringList stockCode;
+    int x;
     foreach (QString strCode , codes) {
-
+        x++;
         SingleStockDataList tmp  = db->getStockData(strCode);
 
 
@@ -38,7 +40,12 @@ QStringList clsMaStrategy::findStockCodes()
 
         if(dblAverage>= tmp.first().open && dblAverage <= tmp.first().close)
             stockCode.append(strCode);
+
+        showProgress(QString("现在进度 %1/%2.").arg(x).arg(codes.length()));
+        qApp->processEvents();
     }
+
+    showProgress("查找Ma已经完毕");
 
     return stockCode;
 }

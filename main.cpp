@@ -14,12 +14,8 @@ int main(int argc, char *argv[])
     clsDBOp::instance()->isOpen();
     clsDBCreateTables::createUpdateTable();
 
-    clsMaStrategy ma;
-    ma.setCondition("60");
 
-   qDebug()<< ma.findStockCodes();
-
-//    clsMainWindow w;
-//    w.show();
+    clsMainWindow w;
+    w.show();
     return a.exec();
 }

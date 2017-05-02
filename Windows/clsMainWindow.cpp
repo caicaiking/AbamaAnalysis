@@ -3,7 +3,7 @@
 #include "clsDBCreateTables.h"
 #include "clsDBOp.h"
 
-
+#include "clsMaStrategy.h"
 clsMainWindow::clsMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -32,4 +32,17 @@ clsMainWindow::~clsMainWindow()
 void clsMainWindow::startGetHisData()
 {
     mStockHisThread->start();
+}
+
+void clsMainWindow::on_btnMa60_clicked()
+{
+    clsMaStrategy ma;
+    connect(&ma,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+
+    ma.setCondition("60");
+
+    QStringList tmp = ma.findStockCodes();
+    txtCodes->setText(tmp.join(","));
+
+
 }
