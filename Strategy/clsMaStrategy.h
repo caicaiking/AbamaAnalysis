@@ -4,6 +4,7 @@
 #include <QObject>
 #include "clsStrategy.h"
 #include <QStringList>
+#include "clsDBCreateTables.h"
 
 class clsMaStrategy : public clsStrategy
 {
@@ -16,6 +17,10 @@ public:
 
 private:
     QString condition;
+
+    clsDBCreateTables * db;
+
+    int average;
 };
 
 #endif // CLSMASTRATEGY_H

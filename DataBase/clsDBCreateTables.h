@@ -31,6 +31,8 @@ public:
       QString getLatestUpdate();
       void setUpdateTime(QDate t);
       void getBlockTable(QMap<QString, BlockData> &data);
+      SingleStockDataList getStockData(QString strCode);
+      QStringList getStockCodes();
 signals:
     void showMessage(QString msg);
 private:

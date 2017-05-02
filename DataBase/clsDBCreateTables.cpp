@@ -228,6 +228,26 @@ bool clsDBCreateTables::createDetaiTable()
     return true;
 }
 
+//get all stock codes from database
+QStringList clsDBCreateTables::getStockCodes()
+{
+        QMutexLocker locker(&m_operation);
+
+        QString sql = QString("select * from details");
+        QSqlQuery q;
+
+        if(!q.exec(sql))
+            return QStringList();
+
+        QStringList tmp;
+        while(q.next())
+        {
+            tmp.append(q.value(0).toString());
+        }
+
+        return tmp;
+}
+
 void clsDBCreateTables::fillDetailTable(const QStringList mStkCodesList)
 {
     QMutexLocker locker(&m_operation);
@@ -334,6 +354,51 @@ QDate clsDBCreateTables::getCodeLatestDate(QString code)
 
 }
 
+//Get one stock data from the data base.
+SingleStockDataList clsDBCreateTables::getStockData(QString strCode)
+{
+    QMutexLocker locker(&m_operation);
+
+    SingleStockDataList data;
+    data.clear();
+
+    QSqlQuery q;
+
+    QString strSql = QString("Select * from %1 order by STDATE desc").arg(strCode);
+
+
+    if(q.exec(strSql))
+    {
+        while(q.next())
+        {
+           SingleStockData tmp;
+
+           tmp.date = q.value(0).toString();
+           tmp.open = q.value(1).toDouble();
+           tmp.close = q.value(2).toDouble();
+           tmp.zd = q.value(3).toDouble();
+           tmp.zdf = q.value(4).toDouble();
+           tmp.low = q.value(5).toDouble();
+           tmp.high = q.value(6).toDouble();
+           tmp.cjl = q.value(7).toDouble();
+           tmp.cje = q.value(8).toDouble();
+           tmp.hsl = q.value(9).toDouble();
+
+           data.append(tmp);
+        }
+        return data;
+    }
+    else
+    {
+        return data;
+    }
+}
+
+/*!
+ * \brief fill data to the code sheet. with the content.
+ * \param code stock code
+ * \param list the data
+ */
 void clsDBCreateTables::fillCodeTable(QString code, SingleStockDataList list)
 {
     QMutexLocker locker(&m_operation);
