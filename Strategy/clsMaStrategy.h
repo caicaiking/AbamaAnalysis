@@ -21,6 +21,7 @@ private:
     clsDBCreateTables * db;
 
     int average;
+    int hsl;
 };
 
 #endif // CLSMASTRATEGY_H

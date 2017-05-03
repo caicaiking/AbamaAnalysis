@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Abama Stock Analysis</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -20,9 +20,9 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QPushButton" name="btnMa60">
+         <widget class="QPushButton" name="btnMa">
           <property name="text">
-           <string>60日均线</string>
+           <string>日均线判断</string>
           </property>
          </widget>
         </item>
@@ -66,6 +66,28 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>417</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>筛选设置</string>
+    </property>
+    <addaction name="actHsl"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <action name="actHsl">
+   <property name="text">
+    <string>换手率设置</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

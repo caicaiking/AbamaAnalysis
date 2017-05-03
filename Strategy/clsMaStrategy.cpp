@@ -3,6 +3,8 @@
 #include "clsDBCreateTables.h"
 #include <QDateTime>
 #include <QApplication>
+#include <QStringList>
+#include <QDebug>
 clsMaStrategy::clsMaStrategy(QObject *parent): clsStrategy(parent)
 {
     db = new clsDBCreateTables(this);
@@ -11,6 +13,8 @@ clsMaStrategy::clsMaStrategy(QObject *parent): clsStrategy(parent)
 
 QStringList clsMaStrategy::findStockCodes()
 {
+
+    qDebug()<<this->condition;
 
     QStringList codes = db->getStockCodes();
     QStringList stockCode;
@@ -38,7 +42,11 @@ QStringList clsMaStrategy::findStockCodes()
 
         double dblAverage = sum / average;
 
-        if(dblAverage>= tmp.first().open && dblAverage <= tmp.first().close)
+        if((dblAverage>= tmp.first().open )
+                && (dblAverage <= tmp.first().close)
+                && (tmp.first().close >10)
+                && (tmp.first().close <30)
+                && ( tmp.first().hsl * 10000.0) > this->hsl*100.0)
             stockCode.append(strCode);
 
         showProgress(QString("现在进度 %1/%2.").arg(x).arg(codes.length()));
@@ -53,7 +61,10 @@ QStringList clsMaStrategy::findStockCodes()
 void clsMaStrategy::setCondition(QString condition)
 {
     this->condition = condition;
-    this->average = this->condition.toInt();
+
+    QStringList strList = condition.split(",");
+    this->average = strList.at(0).toInt();
+    this->hsl = strList.at(1).toInt();
 
 }
 

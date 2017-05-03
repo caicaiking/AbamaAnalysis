@@ -15,13 +15,23 @@ public:
 
 
     ~clsMainWindow();
+
 private slots:
     void startGetHisData();
-    void on_btnMa60_clicked();
+    void on_btnMa_clicked();
+
+
+
+    void on_actHsl_triggered();
 
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;
+
+private:
+
+    int hsl;
+    int average;
 };
 
 #endif // CLSMAINWINDOW_H
