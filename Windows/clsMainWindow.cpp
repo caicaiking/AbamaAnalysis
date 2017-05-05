@@ -3,6 +3,7 @@
 #include "clsDBCreateTables.h"
 #include "clsDBOp.h"
 #include <QInputDialog>
+#include "clsAttact.h"
 
 #include "clsMaStrategy.h"
 clsMainWindow::clsMainWindow(QWidget *parent) :
@@ -21,7 +22,7 @@ clsMainWindow::clsMainWindow(QWidget *parent) :
     connect(mBlockThread,SIGNAL(updateBlockCodesFinished()),
             this,SLOT(startGetHisData()));
 
-    this->hsl =0;
+    this->hsl =2;
     this->average =60;
 }
 
@@ -72,4 +73,13 @@ void clsMainWindow::on_actHsl_triggered()
                                         tr("换手率"),
                                         this->hsl,
                                         0,100);
+}
+
+void clsMainWindow::on_btnAttact_clicked()
+{
+    clsAttact ma;
+    connect(&ma,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+    ma.setCondition(QString::number(this->hsl));
+    QStringList tmp = ma.findStockCodes();
+    txtCodes->setText(tmp.join(","));
 }

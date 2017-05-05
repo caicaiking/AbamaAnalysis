@@ -24,6 +24,8 @@ private slots:
 
     void on_actHsl_triggered();
 
+    void on_btnAttact_clicked();
+
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;

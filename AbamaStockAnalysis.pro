@@ -39,7 +39,8 @@ SOURCES += \
     DataBase/clsDBCreateTables.cpp \
     Stocks/clsStockHisThread.cpp \
     Strategy/clsStrategy.cpp \
-    Strategy/clsMaStrategy.cpp
+    Strategy/clsMaStrategy.cpp \
+    Strategy/clsAttact.cpp
 
 
 RC_FILE  =Icon.rc
@@ -58,7 +59,8 @@ HEADERS += \
     Stocks/clsSingleStockData.h \
     Stocks/clsStockHisThread.h \
     Strategy/clsStrategy.h \
-    Strategy/clsMaStrategy.h
+    Strategy/clsMaStrategy.h \
+    Strategy/clsAttact.h
 
 FORMS += \
     Windows/clsMainWindow.ui
