@@ -40,7 +40,8 @@ SOURCES += \
     Stocks/clsStockHisThread.cpp \
     Strategy/clsStrategy.cpp \
     Strategy/clsMaStrategy.cpp \
-    Strategy/clsAttact.cpp
+    Strategy/clsAttact.cpp \
+    Strategy/clsWeekMa.cpp
 
 
 RC_FILE  =Icon.rc
@@ -60,7 +61,8 @@ HEADERS += \
     Stocks/clsStockHisThread.h \
     Strategy/clsStrategy.h \
     Strategy/clsMaStrategy.h \
-    Strategy/clsAttact.h
+    Strategy/clsAttact.h \
+    Strategy/clsWeekMa.h
 
 FORMS += \
     Windows/clsMainWindow.ui

@@ -4,7 +4,7 @@
 #include "clsDBOp.h"
 #include <QInputDialog>
 #include "clsAttact.h"
-
+#include "clsWeekMa.h"
 #include "clsMaStrategy.h"
 clsMainWindow::clsMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -13,7 +13,7 @@ clsMainWindow::clsMainWindow(QWidget *parent) :
 
     mBlockThread = new QEastMoneyBlockThread(this);
     connect(mBlockThread,SIGNAL(signalUpdateMsg(QString)),label,SLOT(setText(QString)));
-    mBlockThread->start();
+
 
     mStockHisThread = new clsStockHisThread(this);
     connect(mStockHisThread,SIGNAL(signalUpdateMsg(QString)),label,SLOT(setText(QString)));
@@ -82,4 +82,18 @@ void clsMainWindow::on_btnAttact_clicked()
     ma.setCondition(QString::number(this->hsl));
     QStringList tmp = ma.findStockCodes();
     txtCodes->setText(tmp.join(","));
+}
+
+void clsMainWindow::on_btnWeekMa_clicked()
+{
+    clsWeekMa ma;
+    connect(&ma,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+    ma.setCondition(QString::number(this->hsl)+","+"10");
+    QStringList tmp = ma.findStockCodes();
+    txtCodes->setText(tmp.join(","));
+}
+
+void clsMainWindow::on_btnUpdateData_clicked()
+{
+    mBlockThread->start();
 }
