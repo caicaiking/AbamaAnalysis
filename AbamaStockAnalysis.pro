@@ -41,7 +41,8 @@ SOURCES += \
     Strategy/clsStrategy.cpp \
     Strategy/clsMaStrategy.cpp \
     Strategy/clsAttact.cpp \
-    Strategy/clsWeekMa.cpp
+    Strategy/clsWeekMa.cpp \
+    Stocks/clsGetLastWorkDay.cpp
 
 
 RC_FILE  =Icon.rc
@@ -62,7 +63,8 @@ HEADERS += \
     Strategy/clsStrategy.h \
     Strategy/clsMaStrategy.h \
     Strategy/clsAttact.h \
-    Strategy/clsWeekMa.h
+    Strategy/clsWeekMa.h \
+    Stocks/clsGetLastWorkDay.h
 
 FORMS += \
     Windows/clsMainWindow.ui

@@ -3,7 +3,8 @@
 #include "clsSingleStockData.h"
 #include <QApplication>
 #include <QDateTime>
-
+#include "clsGetLastWorkDay.h"
+#include <QDebug>
 clsAttact::clsAttact(QObject *parent):clsStrategy(parent)
 {
     db = new clsDBCreateTables(this);
@@ -13,19 +14,31 @@ clsAttact::clsAttact(QObject *parent):clsStrategy(parent)
 QStringList clsAttact::findStockCodes()
 {
     QStringList codes = db->getStockCodes();
+    showProgress(tr("正在获取最后一个交易日日期"));
+    QString workDay =clsGetLastWorkDay::getLastWorkDate(QDate::currentDate()).toString("yyyy-MM-dd");
+
 
     QStringList stockCodes;
     int i=0;
     foreach (QString strCode, codes) {
         i++;
+
+        showProgress(QString("现在进度 %1/%2--找到：%3股票.")
+                     .arg(i).arg(codes.length()).arg(stockCodes.length()));
         SingleStockDataList tmp = db->getStockData(strCode);
         if(tmp.length()< 60)
             continue;
 
-        if(tmp.first().date <QDateTime::currentDateTime().addSecs(-1*18*60*60).date().toString("yyyy-MM-dd"))
-            continue;
-
-         emit showProgress(QString("现在进度 %1/%2.").arg(i).arg(codes.length()));
+        if(QDate::currentDate().toString("yyyy-MM-dd")> workDay)
+        {
+            if(tmp.first().date < workDay)
+                continue;
+        }
+        else
+        {
+            if(tmp.first().date < QDateTime::currentDateTime().addSecs(-1*18*60*60).date().toString("yyyy-MM-dd"))
+                continue;
+        }
 
         double ave20 = getAverage(tmp,20);
         double ave40 = getAverage(tmp,40);
@@ -36,14 +49,14 @@ QStringList clsAttact::findStockCodes()
 
         if(o>c)
             continue;
-         if(ave40<=ave60)
+        if(ave40<=ave60)
             continue;
         if(ave20 <= ave40)
             continue;
-       if(c<ave20)
-           continue;
-       if(o>ave20)
-           continue;
+        if(c<ave20)
+            continue;
+        if(o>ave20)
+            continue;
 
         if((tmp.first().hsl * 10000.0) < (this->hsl*100.0))
             continue;
@@ -51,6 +64,7 @@ QStringList clsAttact::findStockCodes()
         stockCodes.append(strCode);
         qApp->processEvents();
     }
+    showProgress(QString("查找已经完毕-共计 %1 股票").arg(stockCodes.length()));
 
     return stockCodes;
 }
@@ -71,6 +85,7 @@ double clsAttact::getAverage(const SingleStockDataList &tmp,int average)
     {
         sum+= tmp.at(i).close;
     }
+    qApp->processEvents();
     return sum/average;
 
 }

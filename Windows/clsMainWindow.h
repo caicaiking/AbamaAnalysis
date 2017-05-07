@@ -38,6 +38,8 @@ private:
 
     int hsl;
     int average;
+
+    QStringList lastResult;
 };
 
 #endif // CLSMAINWINDOW_H
