@@ -6,6 +6,10 @@
 #include <QStringList>
 #include <QDebug>
 #include "clsGetLastWorkDay.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
+
 clsMaStrategy::clsMaStrategy(QObject *parent): clsStrategy(parent)
 {
     db = new clsDBCreateTables(this);
@@ -21,7 +25,12 @@ QStringList clsMaStrategy::findStockCodes()
     QString workDay =clsGetLastWorkDay::getLastWorkDate(QDate::currentDate()).toString("yyyy-MM-dd");
 
 
-    QStringList codes = db->getStockCodes();
+    QStringList codes;
+    if(lastCode.isEmpty())
+        codes= db->getStockCodes();
+    else
+        codes = lastCode;
+
     QStringList stockCode;
     int x=0;
     foreach (QString strCode , codes) {
@@ -76,11 +85,22 @@ QStringList clsMaStrategy::findStockCodes()
 
 void clsMaStrategy::setCondition(QString condition)
 {
-    this->condition = condition;
 
-    QStringList strList = condition.split(",");
-    this->average = strList.at(0).toInt();
-    this->hsl = strList.at(1).toInt();
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(condition.toUtf8(),
+                                                &error);
+
+    if(error.error == QJsonParseError::NoError)
+    {
+        if(doc.isObject())
+        {
+            QJsonObject obj = doc.object();
+
+            this->average = obj.value("average").toInt();
+            this->hsl = obj.value("hsl").toInt();
+            this->lastCode = obj.value("stocks").toString().split(",", QString::SkipEmptyParts);
+        }
+    }
 
 }
 

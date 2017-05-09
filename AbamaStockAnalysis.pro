@@ -64,7 +64,8 @@ HEADERS += \
     Strategy/clsMaStrategy.h \
     Strategy/clsAttact.h \
     Strategy/clsWeekMa.h \
-    Stocks/clsGetLastWorkDay.h
+    Stocks/clsGetLastWorkDay.h \
+    Strategy/clsStrategyFactory.h
 
 FORMS += \
     Windows/clsMainWindow.ui

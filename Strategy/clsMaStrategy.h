@@ -22,6 +22,7 @@ private:
 
     int average;
     int hsl;
+    QStringList lastCode;
 };
 
 #endif // CLSMASTRATEGY_H

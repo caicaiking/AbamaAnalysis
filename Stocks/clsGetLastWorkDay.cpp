@@ -63,7 +63,6 @@ QDate clsGetLastWorkDay::getLastWorkDate(QDate day)
                     else
                         return getLastWorkDate(day.addDays(-1));
 
-
                 }
             }
 

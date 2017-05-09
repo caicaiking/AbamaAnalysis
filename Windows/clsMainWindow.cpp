@@ -6,6 +6,10 @@
 #include "clsAttact.h"
 #include "clsWeekMa.h"
 #include "clsMaStrategy.h"
+#include <QJsonDocument>
+#include <QVariantMap>
+#include <QJsonObject>
+
 clsMainWindow::clsMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -44,10 +48,10 @@ void clsMainWindow::startGetHisData()
 void clsMainWindow::on_actHsl_triggered()
 {
     this->hsl = QInputDialog::getInt(this,
-                                        tr("设置换手率"),
-                                        tr("换手率"),
-                                        this->hsl,
-                                        0,100);
+                                     tr("设置换手率"),
+                                     tr("换手率"),
+                                     this->hsl,
+                                     0,100);
 }
 //搜索均线系统
 void clsMainWindow::on_btnMa_clicked()
@@ -57,31 +61,31 @@ void clsMainWindow::on_btnMa_clicked()
     dlg->setWindowTitle(tr("设置要使用的日均线"));
 
     bool ok;
-      average = QInputDialog::getInt(this,tr("设置要使用的日均线"),tr("均线天数：")
-                                       ,this->average,5,200,1,&ok);
+    average = QInputDialog::getInt(this,tr("设置要使用的日均线"),tr("均线天数：")
+                                   ,this->average,5,200,1,&ok);
 
     if(!ok)
         return;
 
+    strategy = clsStrategyFactory::getStrategy(DayMa);
+    connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
 
-    clsMaStrategy ma;
-    connect(&ma,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+    strategy->setCondition(getJsonString());
 
-    ma.setCondition(QString::number(average)+","+QString::number(this->hsl));
-
-    QStringList tmp = ma.findStockCodes();
-    txtCodes->setText(tmp.join("\t"));
+    this->lastResult = strategy->findStockCodes();
+    txtCodes->setText(lastResult.join("\t"));
 
 
 }
 //搜索上攻形态股票
 void clsMainWindow::on_btnAttact_clicked()
 {
-    clsAttact ma;
-    connect(&ma,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
-    ma.setCondition(QString::number(this->hsl));
-    QStringList tmp = ma.findStockCodes();
-    txtCodes->setText(tmp.join("\t"));
+    strategy = clsStrategyFactory::getStrategy(Attack);
+    connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+
+    strategy->setCondition(getJsonString());
+    lastResult = strategy->findStockCodes();
+    txtCodes->setText(lastResult.join("\t"));
 }
 //搜索周平均值穿插平均线的股票
 void clsMainWindow::on_btnWeekMa_clicked()
@@ -90,19 +94,44 @@ void clsMainWindow::on_btnWeekMa_clicked()
     dlg->setWindowTitle(tr("设置要使用的周均线"));
 
     bool ok;
-      average = QInputDialog::getInt(this,tr("设置要使用的周均线"),tr("均线周数：")
-                                       ,this->average,5,200,1,&ok);
+    average = QInputDialog::getInt(this,tr("设置要使用的周均线"),tr("均线周数：")
+                                   ,this->average,5,200,1,&ok);
 
     if(!ok)
         return;
-    clsWeekMa ma;
-    connect(&ma,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
-    ma.setCondition(QString::number(this->hsl)+","+QString::number(this->average));
-    QStringList tmp = ma.findStockCodes();
-    txtCodes->setText(tmp.join("\t"));
+    strategy = clsStrategyFactory::getStrategy(WeekMa);
+    connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+    strategy->setCondition(getJsonString());
+    lastResult= strategy->findStockCodes();
+    txtCodes->setText(lastResult.join("\t"));
 }
 
 void clsMainWindow::on_btnUpdateData_clicked()
 {
     mBlockThread->start();
+
+}
+
+QString clsMainWindow::getJsonString()
+{
+    QVariantMap obj;
+
+    obj.insert("hsl",hsl);
+    obj.insert("average",this->average);
+
+    if(chkUseLastResut->isChecked())
+        obj.insert("stocks",this->lastResult.join(","));
+    else
+        obj.insert("stocks", QStringList());
+
+    QJsonDocument jsonDocument = QJsonDocument::fromVariant(obj);
+    if(!jsonDocument.isNull())
+        return jsonDocument.toJson();
+    else
+        return "";
+}
+
+void clsMainWindow::on_btnGenerate_clicked()
+{
+    qDebug()<< getJsonString();
 }

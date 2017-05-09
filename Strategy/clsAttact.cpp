@@ -5,6 +5,9 @@
 #include <QDateTime>
 #include "clsGetLastWorkDay.h"
 #include <QDebug>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
 clsAttact::clsAttact(QObject *parent):clsStrategy(parent)
 {
     db = new clsDBCreateTables(this);
@@ -13,7 +16,11 @@ clsAttact::clsAttact(QObject *parent):clsStrategy(parent)
 
 QStringList clsAttact::findStockCodes()
 {
-    QStringList codes = db->getStockCodes();
+    QStringList codes;
+    if(lastCode.isEmpty())
+        codes= db->getStockCodes();
+    else
+        codes = lastCode;
     showProgress(tr("正在获取最后一个交易日日期"));
     QString workDay =clsGetLastWorkDay::getLastWorkDate(QDate::currentDate()).toString("yyyy-MM-dd");
 
@@ -71,7 +78,21 @@ QStringList clsAttact::findStockCodes()
 
 void clsAttact::setCondition(QString condition)
 {
-    this->hsl = condition.toDouble();
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(condition.toUtf8(),
+                                                &error);
+
+    if(error.error == QJsonParseError::NoError)
+    {
+        if(doc.isObject())
+        {
+            QJsonObject obj = doc.object();
+
+            this->average = obj.value("average").toInt();
+            this->hsl = obj.value("hsl").toInt();
+            this->lastCode = obj.value("stocks").toString().split(",", QString::SkipEmptyParts);
+        }
+    }
 }
 
 double clsAttact::getAverage(const SingleStockDataList &tmp,int average)

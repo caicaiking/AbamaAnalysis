@@ -5,6 +5,7 @@
 #include "clsStockHisThread.h"
 
 #include "qeastmoneyblockthread.h"
+#include "clsStrategyFactory.h"
 
 class clsMainWindow : public QMainWindow, private Ui::clsMainWindow
 {
@@ -30,6 +31,8 @@ private slots:
 
     void on_btnUpdateData_clicked();
 
+    void on_btnGenerate_clicked();
+
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;
@@ -40,6 +43,9 @@ private:
     int average;
 
     QStringList lastResult;
+    QString getJsonString();
+
+    clsStrategy * strategy;
 };
 
 #endif // CLSMAINWINDOW_H

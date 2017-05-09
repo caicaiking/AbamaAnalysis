@@ -14,6 +14,7 @@ public:
     void setCondition(QString condition);
 
 private:
+    QStringList lastCode;
     double hsl;
     int average;
     clsDBCreateTables *db;

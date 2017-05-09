@@ -15,7 +15,9 @@ public:
 
 private:
 
+    QStringList lastCode;
     double hsl;
+    int average;
     clsDBCreateTables * db;
     double getAverage(const SingleStockDataList &tmp, int average);
 };

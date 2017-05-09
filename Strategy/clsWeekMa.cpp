@@ -4,6 +4,9 @@
 #include <QApplication>
 #include "clsSingleStockData.h"
 #include "clsGetLastWorkDay.h"
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonParseError>
 clsWeekMa::clsWeekMa(QObject *parent)
 {
     this->hsl =0;
@@ -14,7 +17,11 @@ clsWeekMa::clsWeekMa(QObject *parent)
 
 QStringList clsWeekMa::findStockCodes()
 {
-    QStringList codes = db->getStockCodes();
+    QStringList codes;
+    if(lastCode.isEmpty())
+        codes= db->getStockCodes();
+    else
+        codes = lastCode;
     QStringList stockCodes;
 
     showProgress(tr("正在获取最后一个交易日日期"));
@@ -136,7 +143,19 @@ SingleStockDataList clsWeekMa::splitToWeek(SingleStockDataList tmp,
 
 void clsWeekMa::setCondition(QString condition)
 {
-    QStringList tmp = condition.split(",");
-    this->hsl = tmp.at(0).toDouble();
-    this->average = tmp.at(1).toInt();
+    QJsonParseError error;
+    QJsonDocument doc = QJsonDocument::fromJson(condition.toUtf8(),
+                                                &error);
+
+    if(error.error == QJsonParseError::NoError)
+    {
+        if(doc.isObject())
+        {
+            QJsonObject obj = doc.object();
+
+            this->average = obj.value("average").toInt();
+            this->hsl = obj.value("hsl").toInt();
+            this->lastCode = obj.value("stocks").toString().split(",", QString::SkipEmptyParts);
+        }
+    }
 }
