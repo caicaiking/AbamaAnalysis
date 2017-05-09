@@ -24,6 +24,9 @@
           <property name="text">
            <string>日均线判断</string>
           </property>
+          <property name="shortcut">
+           <string>F1</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -31,12 +34,18 @@
           <property name="text">
            <string>上攻形态</string>
           </property>
+          <property name="shortcut">
+           <string>F2</string>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="btnWeekMa">
           <property name="text">
            <string>周均线判断</string>
+          </property>
+          <property name="shortcut">
+           <string>F3</string>
           </property>
          </widget>
         </item>
@@ -57,6 +66,9 @@
          <widget class="QPushButton" name="btnUpdateData">
           <property name="text">
            <string>更新数据</string>
+          </property>
+          <property name="shortcut">
+           <string>F5</string>
           </property>
          </widget>
         </item>
@@ -121,6 +133,9 @@
   <action name="actHsl">
    <property name="text">
     <string>换手率设置</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
    </property>
   </action>
  </widget>

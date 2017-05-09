@@ -131,7 +131,3 @@ QString clsMainWindow::getJsonString()
         return "";
 }
 
-void clsMainWindow::on_btnGenerate_clicked()
-{
-    qDebug()<< getJsonString();
-}

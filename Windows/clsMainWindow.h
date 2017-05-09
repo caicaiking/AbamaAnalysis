@@ -31,8 +31,6 @@ private slots:
 
     void on_btnUpdateData_clicked();
 
-    void on_btnGenerate_clicked();
-
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;
