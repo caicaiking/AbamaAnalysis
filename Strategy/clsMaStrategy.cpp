@@ -18,9 +18,6 @@ clsMaStrategy::clsMaStrategy(QObject *parent): clsStrategy(parent)
 
 QStringList clsMaStrategy::findStockCodes()
 {
-
-    qDebug()<<this->condition;
-
     showProgress(tr("正在获取最后一个交易日日期"));
     QString workDay =clsGetLastWorkDay::getLastWorkDate(QDate::currentDate()).toString("yyyy-MM-dd");
 
