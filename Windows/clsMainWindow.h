@@ -31,6 +31,10 @@ private slots:
 
     void on_btnUpdateData_clicked();
 
+    void on_txtCodes_selectionChanged();
+
+    void on_btnShowStock_clicked();
+
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;

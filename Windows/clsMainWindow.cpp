@@ -3,13 +3,14 @@
 #include "clsDBCreateTables.h"
 #include "clsDBOp.h"
 #include <QInputDialog>
+#include <QTextBlock>
 #include "clsAttact.h"
 #include "clsWeekMa.h"
 #include "clsMaStrategy.h"
 #include <QJsonDocument>
 #include <QVariantMap>
 #include <QJsonObject>
-
+#include "clsShowStock.h"
 clsMainWindow::clsMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -131,3 +132,21 @@ QString clsMainWindow::getJsonString()
         return "";
 }
 
+
+void clsMainWindow::on_txtCodes_selectionChanged()
+{
+
+
+    qDebug()<< this->txtCodes->textCursor().selectedText();
+}
+
+void clsMainWindow::on_btnShowStock_clicked()
+{
+    clsShowStock *stock = new clsShowStock(this);
+
+      stock->setStockCode("sh600719");
+    stock->setWindowTitle(tr("股票  %1 ").arg("sh600000"));
+
+    stock->show();
+
+}
