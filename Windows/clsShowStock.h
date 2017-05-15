@@ -40,6 +40,8 @@ private slots:
 
     void on_btnMonth_clicked(bool checked);
 
+    void on_btnDay_clicked();
+
 private:
     QString stockCode;
     int average;

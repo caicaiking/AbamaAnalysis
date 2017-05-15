@@ -167,3 +167,8 @@ void clsShowStock::on_btnMonth_clicked(bool checked)
 
     customPlot->removeGraph(customPlot->graph(0));
 }
+
+void clsShowStock::on_btnDay_clicked()
+{
+
+}
