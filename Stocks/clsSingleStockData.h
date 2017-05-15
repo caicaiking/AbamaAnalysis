@@ -2,6 +2,8 @@
 #define CLSSINGLESTOCKDATA_H
 
 #include <QMap>
+#include <QDate>
+#include <QDateTime>
 
 struct SingleStockData
 {
@@ -16,6 +18,23 @@ struct SingleStockData
    double cje;     //8 成交额
    double hsl;     //9 换手率
 
+   void setDate(QDate tmp)
+   {
+       this->date = tmp.toString("yyyy-MM-dd");
+   }
+
+   QDate getDate()
+   {
+       return QDate::fromString(date,"yyyy-MM-dd");
+   }
+
+   double getDateDbl()
+   {
+       QDateTime date = QDateTime(getDate());
+       date.setTimeSpec(Qt::UTC);
+       return date.toTime_t();
+
+   }
 };
 typedef QList<SingleStockData> SingleStockDataList;
 #endif // CLSSINGLESTOCKDATA_H

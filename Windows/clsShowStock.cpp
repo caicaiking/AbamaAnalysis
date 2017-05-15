@@ -10,7 +10,7 @@ clsShowStock::clsShowStock(QWidget *parent) :
     db = new clsDBCreateTables();
 
     this->average =1;
-showHq(1,Week);
+
 
 
 
@@ -46,7 +46,7 @@ void clsShowStock::showHq(int totle, ShowType type)
 
         showData.add(d);
 
-        if(i>30)
+        if(i>50)
             break;
     }
 
@@ -55,7 +55,7 @@ void clsShowStock::showHq(int totle, ShowType type)
     candlesticks->setName("Candlestick");
     candlesticks->setChartStyle(QCPFinancial::csCandlestick);
     candlesticks->data()->set(showData);
-    candlesticks->setWidth(3600*24*7*0.8);
+    candlesticks->setWidth(3600*24*7*0.75);
     candlesticks->setTwoColored(true);
     candlesticks->setBrushPositive(Qt::red);
     candlesticks->setBrushNegative(Qt::green);
@@ -70,12 +70,10 @@ void clsShowStock::showHq(int totle, ShowType type)
     customPlot->xAxis->setTicks(false); // only want vertical grid in main axis rect, so hide xAxis backbone, ticks, and labels
     //customPlot->xAxis->setTicker(dateTimeTicker);
     customPlot->rescaleAxes();
-    customPlot->xAxis->scaleRange(1.025, customPlot->xAxis->range().center());
+    customPlot->xAxis->scaleRange(1.05, customPlot->xAxis->range().center());
     customPlot->yAxis->scaleRange(1.1, customPlot->yAxis->range().center());
-    customPlot->repaint();
+    customPlot->replot();
 
-
-    qDebug()<<"to here";
 }
 
 SingleStockDataList clsShowStock::splitToMonth(SingleStockDataList tmp, QDate date)
@@ -149,6 +147,8 @@ SingleStockDataList clsShowStock::splitToWeek(SingleStockDataList tmp )
 
     }
 
+    returnData[0].setDate(returnData[0].getDate().addDays(5-firstDay.dayOfWeek()));
+
     return returnData;
 }
 
@@ -157,4 +157,13 @@ void clsShowStock::on_btnWeek_clicked(bool checked)
 {
     if(checked)
         showHq(1,Week);
+}
+
+
+void clsShowStock::on_btnMonth_clicked(bool checked)
+{
+    if(!checked)
+        return;
+
+    customPlot->removeGraph(customPlot->graph(0));
 }

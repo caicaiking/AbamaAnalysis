@@ -144,9 +144,8 @@ void clsMainWindow::on_btnShowStock_clicked()
 {
     clsShowStock *stock = new clsShowStock(this);
 
-      stock->setStockCode("sh600719");
-    stock->setWindowTitle(tr("股票  %1 ").arg("sh600000"));
+    stock->setStockCode("sh600719");
+    stock->setWindowTitle(tr("股票  %1 ").arg("sh600719"));
 
-    stock->show();
-
+    stock->exec();
 }

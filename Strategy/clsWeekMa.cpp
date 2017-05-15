@@ -25,7 +25,9 @@ QStringList clsWeekMa::findStockCodes()
     QStringList stockCodes;
 
     showProgress(tr("正在获取最后一个交易日日期"));
-    QString workDay =clsGetLastWorkDay::getLastWorkDate(QDate::currentDate()).toString("yyyy-MM-dd");
+    QString workDay =clsGetLastWorkDay::getLastWorkDate(
+                QDateTime::currentDateTime().addSecs(-1*18*60*60).date()).toString("yyyy-MM-dd");
+
     int x=0;
     foreach (QString strCode, codes)
     {
@@ -33,8 +35,9 @@ QStringList clsWeekMa::findStockCodes()
         //strCode ="sh603939";
         showProgress(QString("现在进度 %1/%2--找到：%3股票.")
                      .arg(x).arg(codes.length()).arg(stockCodes.length()));
+       qApp->processEvents();
         SingleStockDataList tmp = db->getStockData(strCode);
-        SingleStockDataList weekTmp = splitToWeek(tmp,QDate::currentDate());
+        SingleStockDataList weekTmp = splitToWeek(tmp,QDate::fromString(workDay,"yyyy-MM-dd"));
 
         if(weekTmp.length()< average)
             continue;

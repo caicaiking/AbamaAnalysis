@@ -34,9 +34,11 @@ private slots:
     SingleStockDataList splitToWeek(SingleStockDataList tmp);
     SingleStockDataList splitToMonth(SingleStockDataList tmp, QDate date);
 
-
-
     void on_btnWeek_clicked(bool checked);
+
+
+
+    void on_btnMonth_clicked(bool checked);
 
 private:
     QString stockCode;

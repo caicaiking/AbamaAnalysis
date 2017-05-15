@@ -4,12 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network concurrent
+QT       += core gui sql network concurrent printsupport
 
 INCLUDEPATH += Stocks \
                 Windows \
                 DataBase \
-                Strategy
+                Strategy \
+                QCustomPlot
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -42,7 +43,9 @@ SOURCES += \
     Strategy/clsMaStrategy.cpp \
     Strategy/clsAttact.cpp \
     Strategy/clsWeekMa.cpp \
-    Stocks/clsGetLastWorkDay.cpp
+    Stocks/clsGetLastWorkDay.cpp \
+    QCustomPlot/qcustomplot.cpp \
+    Windows/clsShowStock.cpp
 
 
 RC_FILE  =Icon.rc
@@ -65,8 +68,11 @@ HEADERS += \
     Strategy/clsAttact.h \
     Strategy/clsWeekMa.h \
     Stocks/clsGetLastWorkDay.h \
-    Strategy/clsStrategyFactory.h
+    Strategy/clsStrategyFactory.h \
+    QCustomPlot/qcustomplot.h \
+    Windows/clsShowStock.h
 
 FORMS += \
-    Windows/clsMainWindow.ui
+    Windows/clsMainWindow.ui \
+    Windows/clsShowStock.ui
 

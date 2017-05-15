@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 
 
     clsMainWindow w;
-    w.show();
+
+    w.showMaximized();
     return a.exec();
 }
