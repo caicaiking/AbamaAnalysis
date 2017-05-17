@@ -142,10 +142,15 @@ void clsMainWindow::on_txtCodes_selectionChanged()
 
 void clsMainWindow::on_btnShowStock_clicked()
 {
+    QString stockCode = txtCodes->textCursor().selectedText();
+    if(stockCode.isEmpty())
+        return;
     clsShowStock *stock = new clsShowStock(this);
 
-    stock->setStockCode("sh600719");
-    stock->setWindowTitle(tr("股票  %1 ").arg("sh600719"));
+
+
+    stock->setStockCode(stockCode);
+    stock->setWindowTitle(tr("股票  %1 ").arg(stockCode));
 
     stock->exec();
 }

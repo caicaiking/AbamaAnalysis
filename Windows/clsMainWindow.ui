@@ -22,7 +22,7 @@
         <item>
          <widget class="QPushButton" name="btnMa">
           <property name="text">
-           <string>日均线判断</string>
+           <string>日均线判断(F1)</string>
           </property>
           <property name="shortcut">
            <string>F1</string>
@@ -32,7 +32,7 @@
         <item>
          <widget class="QPushButton" name="btnAttact">
           <property name="text">
-           <string>上攻形态</string>
+           <string>上攻形态(F2)</string>
           </property>
           <property name="shortcut">
            <string>F2</string>
@@ -42,7 +42,7 @@
         <item>
          <widget class="QPushButton" name="btnWeekMa">
           <property name="text">
-           <string>周均线判断</string>
+           <string>周均线判断(F3)</string>
           </property>
           <property name="shortcut">
            <string>F3</string>
@@ -65,7 +65,7 @@
         <item>
          <widget class="QPushButton" name="btnUpdateData">
           <property name="text">
-           <string>更新数据</string>
+           <string>更新数据(F5)</string>
           </property>
           <property name="shortcut">
            <string>F5</string>
@@ -105,17 +105,20 @@
       <item>
        <widget class="QPushButton" name="btnShowStock">
         <property name="text">
-         <string>显示股票行情</string>
+         <string>(F7)显示股票行情</string>
         </property>
         <property name="shortcut">
-         <string>F3</string>
+         <string>F7</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QCheckBox" name="chkUseLastResut">
         <property name="text">
-         <string>使用上面代码搜索</string>
+         <string>(F6)使用上面代码搜索</string>
+        </property>
+        <property name="shortcut">
+         <string>F6</string>
         </property>
        </widget>
       </item>
