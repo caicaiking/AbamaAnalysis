@@ -85,3 +85,6 @@ FORMS += \
 DEFINES += CHARTDIR_HIDE_OBSOLETE _CRT_SECURE_NO_WARNINGS
 
 unix:!macx: LIBS += -L$$PWD/Libs/ -lchartdir
+
+win32: LIBS += -L$$PWD/Libs/ -lchartdir60
+
