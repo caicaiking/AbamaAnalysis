@@ -58,7 +58,7 @@ clsStockShow::clsStockShow(QWidget *parent) :
     // Set up the GUI
     //
 
-    setWindowTitle("ChartDirector Interactive Financial Chart Demonstration");
+    setWindowTitle(tr("恒通股票参数分析"));
     resize(954, 520);
     QFont defaultFont("Arial");
     defaultFont.setPixelSize(11);
