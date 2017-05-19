@@ -145,9 +145,9 @@ void clsMainWindow::on_txtCodes_selectionChanged()
 
 void clsMainWindow::on_btnShowStock_clicked()
 {
-   // QString stockCode = txtCodes->textCursor().selectedText();
+    QString stockCode = txtCodes->textCursor().selectedText();
 
-    QString stockCode = "sz300081";
+    //QString stockCode = "sz300081";
     if(stockCode.isEmpty())
         return;
 

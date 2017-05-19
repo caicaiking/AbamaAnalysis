@@ -352,7 +352,7 @@ bool clsStockShow::getData(const QString &ticker, QDateTime startDate, QDateTime
     // In this demo, we can get 15 min, daily, weekly or monthly data depending on
     // the time range.
     m_resolution = 86400;
-   if (durationInDays >= 1.5 * 360)
+   if (durationInDays >= 2.0 * 360)
     {
         // 4 years or more - use monthly data points.
         m_resolution = 30 * 86400;
@@ -363,7 +363,7 @@ bool clsStockShow::getData(const QString &ticker, QDateTime startDate, QDateTime
         // Get the required monthly data
         getMonthlyData(ticker, adjustedStartDate, endDate);
     }
-    else if (durationInDays >= 0.5 * 360)
+    else if (durationInDays >= 1.0 * 360)
     {
         // 1 year or more - use weekly points.
         m_resolution = 7 * 86400;
@@ -413,7 +413,7 @@ void clsStockShow::get15MinData(const QString &ticker, QDateTime startDate, QDat
 /// </summary>
 /// <param name="startDate">The starting date/time for the data series.</param>
 /// <param name="endDate">The ending date/time for the data series.</param>
-void clsStockShow::getDailyData(const QString &ticker, QDateTime startDate, QDateTime endDate)
+void clsStockShow::getDailyData(const QString &ticker, QDateTime startDate, QDateTime /*endDate*/)
 {
     //
     // In this demo, we use a random number generator to generate the data. In practice,
@@ -862,11 +862,13 @@ void clsStockShow::drawChart(QChartViewer *viewer)
     // Create the chart object using the selected size
     FinanceChart m(width);
 
+
     // Set the data into the chart object
     m.setData(DoubleArray(m_timeStamps, m_noOfPoints + extraTrailingPoints),
               DoubleArray(m_highData, m_noOfPoints), DoubleArray(m_lowData, m_noOfPoints),
               DoubleArray(m_openData, m_noOfPoints), DoubleArray(m_closeData, m_noOfPoints),
               DoubleArray(m_volData, m_noOfPoints), extraPoints);
+
 
     //
     // We configure the title of the chart. In this demo chart design, we put the
@@ -892,7 +894,7 @@ void clsStockShow::drawChart(QChartViewer *viewer)
 
     // A copyright message at the bottom left corner the title area
     m.addPlotAreaTitle(Chart::BottomRight,
-                       "<*font=arial.ttf,size=8*>(c) Advanced Software Engineering");
+                       "<*font=arial.ttf,size=8*>Abama Stock Analysis");
 
     //
     // Add the first techical indicator according. In this demo, we draw the first
@@ -900,6 +902,8 @@ void clsStockShow::drawChart(QChartViewer *viewer)
     //
     addIndicator(&m, m_Indicator1->itemData(m_Indicator1->currentIndex()).toString(),
                  indicatorHeight);
+
+
 
     //
     // Add the main chart
@@ -954,9 +958,9 @@ void clsStockShow::drawChart(QChartViewer *viewer)
     // (that is, the moving average lines stay on top.)
     //
     if (selectedType == "CandleStick")
-        m.addCandleStick(0x33ff33, 0xff3333);
+        m.addCandleStick(0xff3333,0x33ff33);
     else if (selectedType == "OHLC")
-        m.addHLOC(0x8000, 0x800000);
+        m.addHLOC(0x800000,0x8000);
 
     //
     // Add parabolic SAR if necessary
@@ -979,7 +983,7 @@ void clsStockShow::drawChart(QChartViewer *viewer)
     // Add volume bars to the main chart if necessary
     //
     if (m_VolumeBars->isChecked())
-        m.addVolBars(indicatorHeight, 0x99ff99, 0xff9999, 0xc0c0c0);
+        m.addVolBars(indicatorHeight, 0xff9999,0x99ff99,  0xc0c0c0);
 
     //
     // Add additional indicators as according to user selection.
