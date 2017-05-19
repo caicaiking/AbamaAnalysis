@@ -352,7 +352,7 @@ bool clsStockShow::getData(const QString &ticker, QDateTime startDate, QDateTime
     // In this demo, we can get 15 min, daily, weekly or monthly data depending on
     // the time range.
     m_resolution = 86400;
-   if (durationInDays >= 4.5 * 360)
+   if (durationInDays >= 1.5 * 360)
     {
         // 4 years or more - use monthly data points.
         m_resolution = 30 * 86400;
@@ -363,7 +363,7 @@ bool clsStockShow::getData(const QString &ticker, QDateTime startDate, QDateTime
         // Get the required monthly data
         getMonthlyData(ticker, adjustedStartDate, endDate);
     }
-    else if (durationInDays >= 1.5 * 360)
+    else if (durationInDays >= 0.5 * 360)
     {
         // 1 year or more - use weekly points.
         m_resolution = 7 * 86400;
@@ -381,7 +381,7 @@ bool clsStockShow::getData(const QString &ticker, QDateTime startDate, QDateTime
 
         // Adjust startDate backwards to cater for extraPoints. We multiply the days
         // by 7/5 as we assume 1 week has 5 trading days.
-        QDateTime adjustedStartDate(startDate.date().addDays(-((extraPoints * 7 + 4) / 5 + 2)));
+        QDateTime adjustedStartDate(startDate.date().addDays(-((extraPoints * 7 + 4) / 4 + 2)));
 
         // Get the required daily data
         getDailyData(ticker, adjustedStartDate, endDate);
@@ -430,8 +430,11 @@ void clsStockShow::getDailyData(const QString &ticker, QDateTime startDate, QDat
     while(startDate <= QDateTime(res[i].getDate()))
     {
         i++;
-        if(res.length()< i)
+        if(i>= res.length())
+        {
+            i=i-1;
             break;
+        }
     }
 
     // free the previous data arrays
@@ -451,16 +454,18 @@ void clsStockShow::getDailyData(const QString &ticker, QDateTime startDate, QDat
     m_closeData = new double[i];
     m_volData = new double[i];
 
-    for(int j=0; j<i; j++)
+    for(int j=0;j<i;j++)
     {
-        m_timeStamps[j]= QDateTimeToChartTime(QDateTime(res[j].getDate()));
-        m_highData[j] = res.at(j).high;
-        m_lowData[j] = res.at(j).low;
-        m_openData[j] = res.at(j).open;
-        m_closeData[j] = res.at(j).close;
-        m_volData[j] =  res.at(j).cjl;
+        m_timeStamps[j]= QDateTimeToChartTime(QDateTime(res[i-j-1].getDate()));
+        m_highData[j] = res.at(i-j-1).high;
+        m_lowData[j] = res.at(i-j-1).low;
+        m_openData[j] = res.at(i-j-1).open;
+        m_closeData[j] = res.at(i-j-1).close;
+        m_volData[j] =  res.at(i-j-1).cjl;
 
     }
+
+    //generateRandomData(ticker, startDate, endDate, 86400 );
 }
 
 /// <summary>
@@ -477,10 +482,11 @@ void clsStockShow::getWeeklyData(const QString &ticker, QDateTime startDate, QDa
     // data, you may call "getDailyData" to get daily data first, and then call
     // "convertDailyToWeeklyData" to convert it to weekly data, like:
     //
-    //      getDailyData(ticker, startDate, endDate);
-    //      convertDailyToWeeklyData();
+          getDailyData(ticker, startDate, endDate);
+          convertDailyToWeeklyData();
     //
-    generateRandomData(ticker, startDate, endDate, 86400 * 7);
+
+    // generateRandomData(ticker, startDate, endDate, 86400 * 7);
 }
 
 /// <summary>
@@ -497,10 +503,10 @@ void clsStockShow::getMonthlyData(const QString &ticker, QDateTime startDate, QD
     // data, you may call "getDailyData" to get daily data first, and then call
     // "convertDailyToMonthlyData" to convert it to monthly data, like:
     //
-    //      getDailyData(ticker, startDate, endDate);
-    //      convertDailyToMonthlyData();
+          getDailyData(ticker, startDate, endDate);
+          convertDailyToMonthlyData();
     //
-    generateRandomData(ticker, startDate, endDate, 86400 * 30);
+   // generateRandomData(ticker, startDate, endDate, 86400 * 30);
 }
 
 /// <summary>
