@@ -4,7 +4,7 @@
 #include <QDateTime>
 #include "clsStockShow.h"
 #include "FinanceChart.h"
-
+#include "clsDBCreateTables.h"
 //
 // Because QT uses QDateTime, while ChartDirector uses Chart::chartTime, we need
 // utilities to convert from one to another
@@ -31,6 +31,7 @@ static double QDateTimeToChartTime(QDateTime q)
         QTime(hms / 3600, (hms % 3600) / 60, hms % 60, ms));
 }*/
 
+//Init user interface
 clsStockShow::clsStockShow(QWidget *parent) :
     QDialog(parent, Qt::Window)
 {
@@ -50,6 +51,8 @@ clsStockShow::clsStockShow(QWidget *parent) :
 
     m_compareData = 0;
     m_compareDataLen = 0;
+
+    db= new clsDBCreateTables();
 
     //
     // Set up the GUI
@@ -87,10 +90,10 @@ clsStockShow::clsStockShow(QWidget *parent) :
     m_TickerSymbol = new QLineEdit("ASE.SYMBOL", leftPanel);
     m_TickerSymbol->setGeometry(8, 26, 140, 20);
 
-    // Compare With
-    (new QLabel("Compare With", leftPanel))->setGeometry(8, 52, 140, 18);
-    m_CompareWith = new QLineEdit(leftPanel);
-    m_CompareWith->setGeometry(8, 68, 140, 20);
+//    // Compare With
+//    (new QLabel("Compare With", leftPanel))->setGeometry(8, 52, 140, 18);
+//    m_CompareWith = new QLineEdit(leftPanel);
+//    m_CompareWith->setGeometry(8, 68, 140, 20);
 
     // Time Period
     (new QLabel("Time Period", leftPanel))->setGeometry(8, 94, 140, 18);
@@ -274,6 +277,11 @@ clsStockShow::clsStockShow(QWidget *parent) :
     }
 
     // Update the chart
+
+}
+
+void clsStockShow::drawChart()
+{
     drawChart(m_ChartViewer);
 }
 
@@ -289,6 +297,11 @@ clsStockShow::~clsStockShow()
     delete[] m_closeData;
     delete[] m_volData;
     delete[] m_compareData;
+}
+
+void clsStockShow::setStockCode(QString stockCode)
+{
+    this->m_TickerSymbol->setText(stockCode);
 }
 
 void clsStockShow::onCheckBoxChanged()
@@ -307,10 +320,10 @@ void clsStockShow::onLineEditChanged()
     int new_avgPeriod2 = m_MovAvg2->text().toInt();
 
     QString tickerKey = m_TickerSymbol->text();
-    QString compareKey = m_CompareWith->text();
+//    QString compareKey = m_CompareWith->text();
 
     if ((new_avgPeriod1 != m_avgPeriod1) || (new_avgPeriod2 != m_avgPeriod2) ||
-            (m_tickerKey != tickerKey) || (m_compareKey != compareKey))
+            (m_tickerKey != tickerKey) )/*|| (m_compareKey != compareKey))*/
         drawChart(m_ChartViewer);
 }
 
@@ -339,21 +352,7 @@ bool clsStockShow::getData(const QString &ticker, QDateTime startDate, QDateTime
     // In this demo, we can get 15 min, daily, weekly or monthly data depending on
     // the time range.
     m_resolution = 86400;
-    if (durationInDays <= 10)
-    {
-        // 10 days or less, we assume 15 minute data points are available
-        m_resolution = 900;
-
-        // We need to adjust the startDate backwards for the extraPoints. We assume
-        // 6.5 hours trading time per day, and 5 trading days per week.
-        double dataPointsPerDay = 6.5 * 3600 / m_resolution;
-        QDateTime adjustedStartDate(startDate.date().addDays(
-                                        -(int)(extraPoints / dataPointsPerDay * 7 / 5 + 2.9999999)));
-
-        // Get the required 15 min data
-        get15MinData(ticker, adjustedStartDate, endDate);
-    }
-    else if (durationInDays >= 4.5 * 360)
+   if (durationInDays >= 4.5 * 360)
     {
         // 4 years or more - use monthly data points.
         m_resolution = 30 * 86400;
@@ -422,7 +421,46 @@ void clsStockShow::getDailyData(const QString &ticker, QDateTime startDate, QDat
     // with your own data acquisition code.
     //
 
-    generateRandomData(ticker, startDate, endDate, 86400);
+    if(ticker.isEmpty())
+        return;
+
+
+    int i=0;
+
+    while(startDate <= QDateTime(res[i].getDate()))
+    {
+        i++;
+        if(res.length()< i)
+            break;
+    }
+
+    // free the previous data arrays
+    delete[] m_timeStamps;
+    delete[] m_highData;
+    delete[] m_lowData;
+    delete[] m_openData;
+    delete[] m_closeData;
+    delete[] m_volData;
+
+    // Allocate the data arrays
+    m_noOfPoints =i;
+    m_timeStamps = new double[i];
+    m_highData = new double[i];
+    m_lowData = new double[i];
+    m_openData = new double[i];
+    m_closeData = new double[i];
+    m_volData = new double[i];
+
+    for(int j=0; j<i; j++)
+    {
+        m_timeStamps[j]= QDateTimeToChartTime(QDateTime(res[j].getDate()));
+        m_highData[j] = res.at(j).high;
+        m_lowData[j] = res.at(j).low;
+        m_openData[j] = res.at(j).open;
+        m_closeData[j] = res.at(j).close;
+        m_volData[j] =  res.at(j).cjl;
+
+    }
 }
 
 /// <summary>
@@ -662,8 +700,17 @@ static void errMsg(QChartViewer* viewer, const char *msg)
 /// <param name="viewer">The ChartViewer object to display the chart.</param>
 void clsStockShow::drawChart(QChartViewer *viewer)
 {
+
+
+    res = db->getStockData(this->m_TickerSymbol->text());
+
+    if(res.isEmpty())
+        return;
+
+
+
     // In this demo, we just assume we plot up to the latest time. So endDate is now.
-    QDateTime endDate = QDateTime::currentDateTime();
+    QDateTime endDate = QDateTime(res.first().getDate(),QTime(16,0,0));//QDateTime::currentDateTime();
 
     // If the trading day has not yet started (before 9:30am), or if the end date is on
     // on Sat or Sun, we set the end date to 4:00pm of the last trading day
@@ -714,15 +761,15 @@ void clsStockShow::drawChart(QChartViewer *viewer)
         extraPoints = 25;
 
     // Get the data series to compare with, if any.
-    m_compareKey = m_CompareWith->text();
-    delete[] m_compareData;
-    m_compareData = 0;
-    if (getData(m_compareKey, startDate, endDate, durationInDays, extraPoints))
-    {
-        m_compareData = m_closeData;
-        m_compareDataLen = m_noOfPoints;
-        m_closeData = 0;
-    }
+//    m_compareKey = m_CompareWith->text();
+//    delete[] m_compareData;
+//    m_compareData = 0;
+//    if (getData(m_compareKey, startDate, endDate, durationInDays, extraPoints))
+//    {
+//        m_compareData = m_closeData;
+//        m_compareDataLen = m_noOfPoints;
+//        m_closeData = 0;
+//    }
 
     // The data series we want to get.
     m_tickerKey = m_TickerSymbol->text();

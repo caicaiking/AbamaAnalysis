@@ -152,6 +152,8 @@ void clsMainWindow::on_btnShowStock_clicked()
         return;
 
     clsStockShow * dlg = new clsStockShow(this);
+    dlg->setStockCode(stockCode);
+    dlg->drawChart();
     dlg->show();
 //    clsShowStock *stock = new clsShowStock(this);
 

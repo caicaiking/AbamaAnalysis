@@ -6,6 +6,8 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include "qchartviewer.h"
+#include "clsDBCreateTables.h"
+#include "clsSingleStockData.h"
 
 class clsStockShow : public QDialog
 {
@@ -13,7 +15,8 @@ class clsStockShow : public QDialog
 public:
     clsStockShow(QWidget *parent = 0);
     ~clsStockShow();
-
+    void setStockCode(QString stockCode);
+    void drawChart();
 private:
     // TimeStamps, volume, high, low, open and close data
     QString m_tickerKey;
@@ -56,7 +59,7 @@ private:
 
     // The user interface
     QLineEdit *m_TickerSymbol;
-    QLineEdit *m_CompareWith;
+   // QLineEdit *m_CompareWith;
     QComboBox *m_TimeRange;
     QComboBox *m_ChartSize;
     QCheckBox *m_VolumeBars;
@@ -76,6 +79,9 @@ private:
     QChartViewer *m_ChartViewer;
 
     virtual void drawChart(QChartViewer *viewer);
+
+    SingleStockDataList res;
+    clsDBCreateTables *db;
 
 private slots:
     void onComboBoxChanged(int);
