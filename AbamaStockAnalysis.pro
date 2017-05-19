@@ -10,7 +10,7 @@ INCLUDEPATH += Stocks \
                 Windows \
                 DataBase \
                 Strategy \
-                QCustomPlot
+                CandlePlot
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -44,8 +44,9 @@ SOURCES += \
     Strategy/clsAttact.cpp \
     Strategy/clsWeekMa.cpp \
     Stocks/clsGetLastWorkDay.cpp \
-    QCustomPlot/qcustomplot.cpp \
-    Windows/clsShowStock.cpp
+    CandlePlot/qchartviewer.cpp \
+    CandlePlot/clsStockShow.cpp
+
 
 
 RC_FILE  =Icon.rc
@@ -69,10 +70,18 @@ HEADERS += \
     Strategy/clsWeekMa.h \
     Stocks/clsGetLastWorkDay.h \
     Strategy/clsStrategyFactory.h \
-    QCustomPlot/qcustomplot.h \
-    Windows/clsShowStock.h
+    CandlePlot/bchartdir.h \
+    CandlePlot/chartdir.h \
+    CandlePlot/FinanceChart.h \
+    CandlePlot/memblock.h \
+    CandlePlot/qchartviewer.h \
+    CandlePlot/clsStockShow.h
+
 
 FORMS += \
-    Windows/clsMainWindow.ui \
-    Windows/clsShowStock.ui
+    Windows/clsMainWindow.ui
 
+
+DEFINES += CHARTDIR_HIDE_OBSOLETE _CRT_SECURE_NO_WARNINGS
+
+unix:!macx: LIBS += -L$$PWD/Libs/ -lchartdir

@@ -10,7 +10,10 @@
 #include <QJsonDocument>
 #include <QVariantMap>
 #include <QJsonObject>
-#include "clsShowStock.h"
+
+#include "clsStockShow.h"
+
+
 clsMainWindow::clsMainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -142,15 +145,20 @@ void clsMainWindow::on_txtCodes_selectionChanged()
 
 void clsMainWindow::on_btnShowStock_clicked()
 {
-    QString stockCode = txtCodes->textCursor().selectedText();
+   // QString stockCode = txtCodes->textCursor().selectedText();
+
+    QString stockCode = "sz300081";
     if(stockCode.isEmpty())
         return;
-    clsShowStock *stock = new clsShowStock(this);
+
+    clsStockShow * dlg = new clsStockShow(this);
+    dlg->show();
+//    clsShowStock *stock = new clsShowStock(this);
 
 
 
-    stock->setStockCode(stockCode);
-    stock->setWindowTitle(tr("股票  %1 ").arg(stockCode));
+//    stock->setStockCode(stockCode);
+//    stock->setWindowTitle(tr("股票  %1 ").arg(stockCode));
 
-    stock->exec();
+//    stock->exec();
 }
