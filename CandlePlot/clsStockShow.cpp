@@ -130,8 +130,8 @@ clsStockShow::clsStockShow(QWidget *parent) :
     (new QLabel("Moving Averages", leftPanel))->setGeometry(8, 346, 140, 18);
     m_AvgType1 = new QComboBox(leftPanel);
     m_AvgType2 = new QComboBox(leftPanel);
-    m_MovAvg1 = new QLineEdit("10", leftPanel);
-    m_MovAvg2 = new QLineEdit("25", leftPanel);
+    m_MovAvg1 = new QLineEdit("14", leftPanel);
+    m_MovAvg2 = new QLineEdit("60", leftPanel);
     m_AvgType1->setGeometry(8, 362, 105, 20);
     m_AvgType2->setGeometry(8, 383, 105, 20);
     m_MovAvg1->setGeometry(113, 362, 35, 20);
