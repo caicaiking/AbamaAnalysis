@@ -88,3 +88,6 @@ unix:!macx: LIBS += -L$$PWD/Libs/ -lchartdir
 
 win32: LIBS += -L$$PWD/Libs/ -lchartdir60
 
+RESOURCES += \
+    MyRes.qrc
+

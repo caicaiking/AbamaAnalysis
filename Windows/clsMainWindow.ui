@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>561</width>
-    <height>277</height>
+    <width>879</width>
+    <height>484</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,8 +21,36 @@
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QPushButton" name="btnMa">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
           <property name="text">
-           <string>日均线判断(F1)</string>
+           <string> 日均线判断(F1)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../MyRes.qrc">
+            <normaloff>:/Icons/day.png</normaloff>:/Icons/day.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="shortcut">
            <string>F1</string>
@@ -31,8 +59,36 @@
         </item>
         <item>
          <widget class="QPushButton" name="btnAttact">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
           <property name="text">
-           <string>上攻形态(F2)</string>
+           <string>   上攻形态(F2)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../MyRes.qrc">
+            <normaloff>:/Icons/attack.png</normaloff>:/Icons/attack.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="shortcut">
            <string>F2</string>
@@ -41,8 +97,36 @@
         </item>
         <item>
          <widget class="QPushButton" name="btnWeekMa">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
           <property name="text">
-           <string>周均线判断(F3)</string>
+           <string> 周均线判断(F3)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../MyRes.qrc">
+            <normaloff>:/Icons/week.png</normaloff>:/Icons/week.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="shortcut">
            <string>F3</string>
@@ -64,8 +148,36 @@
         </item>
         <item>
          <widget class="QPushButton" name="btnUpdateData">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
           <property name="text">
-           <string>更新数据(F5)</string>
+           <string>  更新数据(F5)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../MyRes.qrc">
+            <normaloff>:/Icons/update.png</normaloff>:/Icons/update.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="shortcut">
            <string>F5</string>
@@ -82,6 +194,12 @@
           <height>0</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>楷体</family>
+          <pointsize>20</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
      </layout>
@@ -90,6 +208,24 @@
      <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,0,0">
       <item>
        <widget class="QLabel" name="label_2">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>楷体</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>状态:</string>
         </property>
@@ -97,6 +233,24 @@
       </item>
       <item>
        <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>楷体</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>没有更新数据</string>
         </property>
@@ -104,8 +258,32 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnShowStock">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>楷体</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>(F7)显示股票行情</string>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
         </property>
         <property name="shortcut">
          <string>F7</string>
@@ -114,6 +292,24 @@
       </item>
       <item>
        <widget class="QCheckBox" name="chkUseLastResut">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>35</height>
+         </size>
+        </property>
+        <property name="sizeIncrement">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>楷体</family>
+          <pointsize>14</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>(F6)使用上面代码搜索</string>
         </property>
@@ -131,11 +327,23 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>561</width>
-     <height>28</height>
+     <width>879</width>
+     <height>27</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
    <widget class="QMenu" name="menu">
+    <property name="font">
+     <font>
+      <family>楷体</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>筛选设置</string>
     </property>
@@ -144,14 +352,26 @@
    <addaction name="menu"/>
   </widget>
   <action name="actHsl">
+   <property name="icon">
+    <iconset resource="../MyRes.qrc">
+     <normaloff>:/Icons/hsl.png</normaloff>:/Icons/hsl.png</iconset>
+   </property>
    <property name="text">
     <string>换手率设置</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>楷体</family>
+     <pointsize>14</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>F9</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../MyRes.qrc"/>
+ </resources>
  <connections/>
 </ui>

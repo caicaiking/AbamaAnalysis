@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/update.png</file>
+        <file>Icons/week.png</file>
+        <file>Icons/attack.png</file>
+        <file>Icons/day.png</file>
+        <file>Icons/hsl.png</file>
+    </qresource>
+</RCC>
