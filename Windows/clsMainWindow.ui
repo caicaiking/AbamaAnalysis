@@ -184,6 +184,44 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="btnSendEmail">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>  发送Email(F8)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../MyRes.qrc">
+            <normaloff>:/Icons/email.png</normaloff>:/Icons/email.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>F8</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>

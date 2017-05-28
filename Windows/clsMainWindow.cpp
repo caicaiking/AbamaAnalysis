@@ -10,6 +10,10 @@
 #include <QJsonDocument>
 #include <QVariantMap>
 #include <QJsonObject>
+#include "smtpclient.h"
+#include "mimetext.h"
+#include "mimemessage.h"
+
 
 //#include "clsStockShow.h"
 #include "clsShowStockUi.h"
@@ -136,12 +140,7 @@ QString clsMainWindow::getJsonString()
 }
 
 
-void clsMainWindow::on_txtCodes_selectionChanged()
-{
 
-
-    qDebug()<< this->txtCodes->textCursor().selectedText();
-}
 
 void clsMainWindow::on_btnShowStock_clicked()
 {
@@ -155,5 +154,43 @@ void clsMainWindow::on_btnShowStock_clicked()
     dlg->setStockCode(stockCode);
     dlg->drawChart();
     dlg->show();
+
+}
+
+void clsMainWindow::on_btnSendEmail_clicked()
+{
+    //实例化发送邮件对象
+     SmtpClient smtp("smtp.163.com",25,SmtpClient::TcpConnection);
+    smtp.setUser("a_tsai@163.com");
+    smtp.setPassword("caicaiking142514");
+
+    //构建邮件主题，包括发件人附件等
+    MimeMessage message;
+    message.setSender(new EmailAddress("a_tsai@163.com"));
+
+    //添加收件人
+    message.addRecipient(new EmailAddress("abama.cai@waynekerr.net"));;
+
+    message.setSubject(QString("%1 Stock Codes").arg(QDate::currentDate().toString("yyyy-MM-dd")));
+
+    MimeText text;
+    text.setText(txtCodes->document()->toPlainText());
+
+    message.addPart(&text);
+
+    if(!smtp.connectToHost())
+    {
+        qDebug()<<QStringLiteral("服务器连接失败");
+    }
+
+    if(!smtp.login())
+        qDebug()<< QStringLiteral("用户登录失败");
+
+    if(!smtp.sendMail(message))
+        qDebug()<< QStringLiteral("邮件发送失败");
+    else
+        qDebug()<< QStringLiteral("邮件发送成功");
+
+    smtp.quit();
 
 }

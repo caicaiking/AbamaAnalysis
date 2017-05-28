@@ -10,7 +10,8 @@ INCLUDEPATH += Stocks \
                 Windows \
                 DataBase \
                 Strategy \
-                CandlePlot
+                CandlePlot \
+                Emails
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -46,7 +47,19 @@ SOURCES += \
     Stocks/clsGetLastWorkDay.cpp \
     CandlePlot/qchartviewer.cpp \
     CandlePlot/clsStockShow.cpp \
-    Windows/clsShowStockUi.cpp
+    Windows/clsShowStockUi.cpp \
+    Emails/emailaddress.cpp \
+    Emails/mimeattachment.cpp \
+    Emails/mimecontentformatter.cpp \
+    Emails/mimefile.cpp \
+    Emails/mimehtml.cpp \
+    Emails/mimeinlinefile.cpp \
+    Emails/mimemessage.cpp \
+    Emails/mimemultipart.cpp \
+    Emails/mimepart.cpp \
+    Emails/mimetext.cpp \
+    Emails/quotedprintable.cpp \
+    Emails/smtpclient.cpp
 
 
 
@@ -77,7 +90,20 @@ HEADERS += \
     CandlePlot/memblock.h \
     CandlePlot/qchartviewer.h \
     CandlePlot/clsStockShow.h \
-    Windows/clsShowStockUi.h
+    Windows/clsShowStockUi.h \
+    Emails/emailaddress.h \
+    Emails/mimeattachment.h \
+    Emails/mimecontentformatter.h \
+    Emails/mimefile.h \
+    Emails/mimehtml.h \
+    Emails/mimeinlinefile.h \
+    Emails/mimemessage.h \
+    Emails/mimemultipart.h \
+    Emails/mimepart.h \
+    Emails/mimetext.h \
+    Emails/quotedprintable.h \
+    Emails/smtpclient.h \
+    Emails/smtpmime.h
 
 
 FORMS += \

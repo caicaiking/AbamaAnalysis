@@ -21,8 +21,6 @@ private slots:
     void startGetHisData();
     void on_btnMa_clicked();
 
-
-
     void on_actHsl_triggered();
 
     void on_btnAttact_clicked();
@@ -31,9 +29,9 @@ private slots:
 
     void on_btnUpdateData_clicked();
 
-    void on_txtCodes_selectionChanged();
-
     void on_btnShowStock_clicked();
+
+    void on_btnSendEmail_clicked();
 
 private:
     QEastMoneyBlockThread *mBlockThread;
