@@ -45,7 +45,8 @@ SOURCES += \
     Strategy/clsWeekMa.cpp \
     Stocks/clsGetLastWorkDay.cpp \
     CandlePlot/qchartviewer.cpp \
-    CandlePlot/clsStockShow.cpp
+    CandlePlot/clsStockShow.cpp \
+    Windows/clsShowStockUi.cpp
 
 
 
@@ -75,11 +76,13 @@ HEADERS += \
     CandlePlot/FinanceChart.h \
     CandlePlot/memblock.h \
     CandlePlot/qchartviewer.h \
-    CandlePlot/clsStockShow.h
+    CandlePlot/clsStockShow.h \
+    Windows/clsShowStockUi.h
 
 
 FORMS += \
-    Windows/clsMainWindow.ui
+    Windows/clsMainWindow.ui \
+    Windows/clsShowStockUi.ui
 
 
 DEFINES += CHARTDIR_HIDE_OBSOLETE _CRT_SECURE_NO_WARNINGS

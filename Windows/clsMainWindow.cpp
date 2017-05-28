@@ -11,8 +11,8 @@
 #include <QVariantMap>
 #include <QJsonObject>
 
-#include "clsStockShow.h"
-
+//#include "clsStockShow.h"
+#include "clsShowStockUi.h"
 
 clsMainWindow::clsMainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -151,16 +151,9 @@ void clsMainWindow::on_btnShowStock_clicked()
     if(stockCode.isEmpty())
         return;
 
-    clsStockShow * dlg = new clsStockShow(this);
+    clsShowStockUi * dlg = new clsShowStockUi(this);
     dlg->setStockCode(stockCode);
     dlg->drawChart();
     dlg->show();
-//    clsShowStock *stock = new clsShowStock(this);
 
-
-
-//    stock->setStockCode(stockCode);
-//    stock->setWindowTitle(tr("股票  %1 ").arg(stockCode));
-
-//    stock->exec();
 }
