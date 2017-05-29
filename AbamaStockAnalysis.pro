@@ -59,7 +59,8 @@ SOURCES += \
     Emails/mimepart.cpp \
     Emails/mimetext.cpp \
     Emails/quotedprintable.cpp \
-    Emails/smtpclient.cpp
+    Emails/smtpclient.cpp \
+    Windows/clsNumberInput.cpp
 
 
 
@@ -103,12 +104,14 @@ HEADERS += \
     Emails/mimetext.h \
     Emails/quotedprintable.h \
     Emails/smtpclient.h \
-    Emails/smtpmime.h
+    Emails/smtpmime.h \
+    Windows/clsNumberInput.h
 
 
 FORMS += \
     Windows/clsMainWindow.ui \
-    Windows/clsShowStockUi.ui
+    Windows/clsShowStockUi.ui \
+    Windows/clsNumberInput.ui
 
 
 DEFINES += CHARTDIR_HIDE_OBSOLETE _CRT_SECURE_NO_WARNINGS

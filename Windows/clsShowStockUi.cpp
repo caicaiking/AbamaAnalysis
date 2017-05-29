@@ -394,18 +394,12 @@ void clsShowStockUi::drawChart(QChartViewer *viewer)
     // Default is the large chart size.
     //
 
-    qDebug()<<this->widget->width();
-    qDebug()<<this->widget->height();
-
     int width = widget->width()-16;
     int mainHeight = widget->height()-240-14-55;
     int indicatorHeight = 120;
 
-
-
     // Create the chart object using the selected size
     FinanceChart m(width);
-
 
     // Set the data into the chart object
     m.setData(DoubleArray(m_timeStamps, m_noOfPoints + extraTrailingPoints),
@@ -446,8 +440,6 @@ void clsShowStockUi::drawChart(QChartViewer *viewer)
     //
     addIndicator(&m, m_Indicator1->itemData(m_Indicator1->currentIndex()).toString(),
                  indicatorHeight);
-
-
 
     //
     // Add the main chart

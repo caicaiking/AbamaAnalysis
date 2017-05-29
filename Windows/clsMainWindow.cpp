@@ -13,7 +13,7 @@
 #include "smtpclient.h"
 #include "mimetext.h"
 #include "mimemessage.h"
-
+#include "clsNumberInput.h"
 
 //#include "clsStockShow.h"
 #include "clsShowStockUi.h"
@@ -55,7 +55,7 @@ void clsMainWindow::startGetHisData()
 //设置换手率
 void clsMainWindow::on_actHsl_triggered()
 {
-    this->hsl = QInputDialog::getInt(this,
+    this->hsl = clsNumberInput::getNumber(this,
                                      tr("设置换手率"),
                                      tr("换手率"),
                                      this->hsl,
@@ -69,7 +69,7 @@ void clsMainWindow::on_btnMa_clicked()
     dlg->setWindowTitle(tr("设置要使用的日均线"));
 
     bool ok;
-    average = QInputDialog::getInt(this,tr("设置要使用的日均线"),tr("均线天数：")
+    average = clsNumberInput::getNumber(this,tr("设置要使用的日均线"),tr("均线天数：")
                                    ,this->average,5,200,1,&ok);
 
     if(!ok)
@@ -98,11 +98,8 @@ void clsMainWindow::on_btnAttact_clicked()
 //搜索周平均值穿插平均线的股票
 void clsMainWindow::on_btnWeekMa_clicked()
 {
-    QInputDialog * dlg = new QInputDialog(this);
-    dlg->setWindowTitle(tr("设置要使用的周均线"));
-
     bool ok;
-    average = QInputDialog::getInt(this,tr("设置要使用的周均线"),tr("均线周数：")
+    average = clsNumberInput::getNumber(this,tr("设置要使用的周均线"),tr("均线周数：")
                                    ,this->average,5,200,1,&ok);
 
     if(!ok)
