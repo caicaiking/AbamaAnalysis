@@ -1,4 +1,5 @@
 #include "clsMainWindow.h"
+#include <QMessageBox>
 #include <QDebug>
 #include "clsDBCreateTables.h"
 #include "clsDBOp.h"
@@ -56,10 +57,10 @@ void clsMainWindow::startGetHisData()
 void clsMainWindow::on_actHsl_triggered()
 {
     this->hsl = clsNumberInput::getNumber(this,
-                                     tr("设置换手率"),
-                                     tr("换手率"),
-                                     this->hsl,
-                                     0,100);
+                                          tr("设置换手率"),
+                                          tr("换手率"),
+                                          this->hsl,
+                                          0,100);
 }
 //搜索均线系统
 void clsMainWindow::on_btnMa_clicked()
@@ -70,7 +71,7 @@ void clsMainWindow::on_btnMa_clicked()
 
     bool ok;
     average = clsNumberInput::getNumber(this,tr("设置要使用的日均线"),tr("均线天数：")
-                                   ,this->average,5,200,1,&ok);
+                                        ,this->average,5,200,1,&ok);
 
     if(!ok)
         return;
@@ -100,7 +101,7 @@ void clsMainWindow::on_btnWeekMa_clicked()
 {
     bool ok;
     average = clsNumberInput::getNumber(this,tr("设置要使用的周均线"),tr("均线周数：")
-                                   ,this->average,5,200,1,&ok);
+                                        ,this->average,5,200,1,&ok);
 
     if(!ok)
         return;
@@ -157,7 +158,7 @@ void clsMainWindow::on_btnShowStock_clicked()
 void clsMainWindow::on_btnSendEmail_clicked()
 {
     //实例化发送邮件对象
-     SmtpClient smtp("smtp.163.com",25,SmtpClient::TcpConnection);
+    SmtpClient smtp("smtp.163.com",25,SmtpClient::TcpConnection);
     smtp.setUser("a_tsai@163.com");
     smtp.setPassword("caicaiking142514");
 
@@ -168,6 +169,7 @@ void clsMainWindow::on_btnSendEmail_clicked()
     //添加收件人
     message.addRecipient(new EmailAddress("abama.cai@waynekerr.net"));;
 
+    // message.addRecipient(new EmailAddress("sclean.mao@waynekerr.net"));
     message.setSubject(QString("%1 Stock Codes").arg(QDate::currentDate().toString("yyyy-MM-dd")));
 
     MimeText text;
@@ -177,16 +179,16 @@ void clsMainWindow::on_btnSendEmail_clicked()
 
     if(!smtp.connectToHost())
     {
-        qDebug()<<QStringLiteral("服务器连接失败");
+        label->setText(tr("服务器连接失败"));
     }
 
     if(!smtp.login())
-        qDebug()<< QStringLiteral("用户登录失败");
+        label->setText(tr("用户登录失败"));
 
     if(!smtp.sendMail(message))
-        qDebug()<< QStringLiteral("邮件发送失败");
+        label->setText(tr("邮件发送失败"));
     else
-        qDebug()<< QStringLiteral("邮件发送成功");
+        label->setText(tr("邮件发送成功"));
 
     smtp.quit();
 
