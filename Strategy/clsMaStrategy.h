@@ -5,6 +5,14 @@
 #include "clsStrategy.h"
 #include <QStringList>
 #include "clsDBCreateTables.h"
+#include "FinanceChart.h"
+
+///!
+//! \brief The clsMaStrategy class
+//!
+//! 主要是完成了 Ma 的平均天数的收盘价，下面采用新的算法来计算。
+//!
+//!
 
 class clsMaStrategy : public clsStrategy
 {

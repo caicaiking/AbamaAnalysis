@@ -605,7 +605,7 @@ bool clsShowStockUi::getData(const QString &ticker, QDateTime startDate, QDateTi
     if (durationInDays >= 2.0 * 360)
     {
         // 4 years or more - use monthly data points.
-        m_resolution = 30 * 86400;
+        m_resolution = 7 * 86400;
 
         // Adjust startDate backwards to cater for extraPoints
         QDateTime adjustedStartDate(startDate.date().addMonths(-extraPoints));
@@ -687,7 +687,6 @@ void clsShowStockUi::getDailyData(const QString &ticker, QDateTime startDate, QD
 
     }
 }
-
 
 void clsShowStockUi::getWeeklyData(const QString &ticker, QDateTime startDate, QDateTime endDate)
 {

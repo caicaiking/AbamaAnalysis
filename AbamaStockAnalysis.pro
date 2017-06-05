@@ -46,7 +46,6 @@ SOURCES += \
     Strategy/clsWeekMa.cpp \
     Stocks/clsGetLastWorkDay.cpp \
     CandlePlot/qchartviewer.cpp \
-    CandlePlot/clsStockShow.cpp \
     Windows/clsShowStockUi.cpp \
     Emails/emailaddress.cpp \
     Emails/mimeattachment.cpp \
@@ -90,7 +89,6 @@ HEADERS += \
     CandlePlot/FinanceChart.h \
     CandlePlot/memblock.h \
     CandlePlot/qchartviewer.h \
-    CandlePlot/clsStockShow.h \
     Windows/clsShowStockUi.h \
     Emails/emailaddress.h \
     Emails/mimeattachment.h \

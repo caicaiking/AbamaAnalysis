@@ -39,6 +39,8 @@ QStringList clsMaStrategy::findStockCodes()
         SingleStockDataList tmp  = db->getStockData(strCode);
 
 
+       //  ArrayMath
+
         if(this->average ==0 )
             continue;
 
