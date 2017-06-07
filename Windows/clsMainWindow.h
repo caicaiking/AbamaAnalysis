@@ -33,6 +33,8 @@ private slots:
 
     void on_btnSendEmail_clicked();
 
+    void on_btnBollin_clicked();
+
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;

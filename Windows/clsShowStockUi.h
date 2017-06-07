@@ -9,16 +9,14 @@
 class clsShowStockUi : public QDialog, private Ui::clsShowStockUi
 {
     Q_OBJECT
-
-
 public:
     explicit clsShowStockUi(QWidget *parent = 0);
     ~clsShowStockUi();
     void setStockCode(QString stockCode);
     void drawChart();
 
+    static double QDateTimeToChartTime(QDateTime q);
 private:
-
     // TimeStamps, volume, high, low, open and close data
     QString m_tickerKey;
     double *m_timeStamps;
@@ -33,20 +31,18 @@ private:
     QString m_compareKey;
     double *m_compareData;
     int m_compareDataLen;
-
     // The resolution of the data in seconds. 1 day = 86400 seconds.
     int m_resolution;
-
     // The moving average periods
     int m_avgPeriod1;
     int m_avgPeriod2;
 
     //用于显示图标
-     QChartViewer *m_ChartViewer;
+    QChartViewer *m_ChartViewer;
 
     // Routines to get data into the data arrays
     virtual bool getData(const QString &ticker, QDateTime startDate, QDateTime endDate,
-            int durationInDays, int extraPoints);
+                         int durationInDays, int extraPoints);
 
     virtual void getDailyData(const QString &ticker, QDateTime startDate, QDateTime endDate);
     virtual void getWeeklyData(const QString &ticker, QDateTime startDate, QDateTime endDate);
@@ -56,25 +52,26 @@ private:
     virtual void convertDailyToWeeklyData();
     virtual void convertDailyToMonthlyData();
     virtual void aggregateData(ArrayMath &aggregator);
+    void initVariables();
+    void initUi();
+
+    void drawChart(QChartViewer *viewer);
+
+    SingleStockDataList res;
+    clsDBCreateTables *db;
 
 
+    void readSettings();
 
-
-     void initVariables();
-     void initUi();
-
-     void drawChart(QChartViewer *viewer);
-
-     SingleStockDataList res;
-     clsDBCreateTables *db;
+    void saveSettings();
 
 protected:
-     void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *e);
 
 private slots:
-     void onComboBoxChanged(int);
-     void onCheckBoxChanged();
-     void onLineEditChanged();
+    void onComboBoxChanged(int);
+    void onCheckBoxChanged();
+    void onLineEditChanged();
 
 };
 

@@ -2,9 +2,9 @@
 #include <QHBoxLayout>
 #include "FinanceChart.h"
 #include <QDebug>
-
+#include "clsSettings.h"
 // Convert from QDateTime to chartTime
-static double QDateTimeToChartTime(QDateTime q)
+ double clsShowStockUi::QDateTimeToChartTime(QDateTime q)
 {
     QDate d = q.date();
     QTime t = q.time();
@@ -74,7 +74,7 @@ void clsShowStockUi::initUi()
     layout->addWidget(m_ChartViewer);
     widget->setLayout(layout);
 
-   // m_ChartViewer->move(8,12);
+    // m_ChartViewer->move(8,12);
     m_ChartViewer->setFont(QFont("楷体",14));
     m_TimeRange->addItem(tr("1 个月"), 30);
     m_TimeRange->addItem(tr("2 个月"), 60);
@@ -155,13 +155,15 @@ void clsShowStockUi::initUi()
     {
         m_Indicator2->addItem(m_Indicator1->itemText(i), m_Indicator1->itemData(i));
         //m_Indicator3->addItem(m_Indicator1->itemText(i), m_Indicator1->itemData(i));
-       // m_Indicator4->addItem(m_Indicator1->itemText(i), m_Indicator1->itemData(i));
+        // m_Indicator4->addItem(m_Indicator1->itemText(i), m_Indicator1->itemData(i));
     }
 
     m_Indicator1->setCurrentIndex(m_Indicator1->findData("RSI"));
     m_Indicator2->setCurrentIndex(m_Indicator2->findData("MACD"));
-   // m_Indicator3->setCurrentIndex(0);
-   // m_Indicator4->setCurrentIndex(0);
+    // m_Indicator3->setCurrentIndex(0);
+    // m_Indicator4->setCurrentIndex(0);
+
+    readSettings();
 
     const QObjectList &allControls = this->children();
     for (int i = 0; i < allControls.count(); ++i)
@@ -275,6 +277,9 @@ static XYChart* addIndicator(FinanceChart *m, QString indicator, int height)
     else
         return 0;
 }
+
+
+
 
 
 void clsShowStockUi::drawChart(QChartViewer *viewer)
@@ -426,13 +431,13 @@ void clsShowStockUi::drawChart(QChartViewer *viewer)
         resolutionText = "15-min";
 
     char buffer[1024];
-    sprintf(buffer, "<*font=arial.ttf,size=8*>%s - %s chart", m.formatValue(
+    sprintf(buffer, "<*font=arial.ttf,size=12*>%s - %s chart", m.formatValue(
                 QDateTimeToChartTime(QDateTime::currentDateTime()), "mmm dd, yyyy"), resolutionText);
     m.addPlotAreaTitle(Chart::BottomLeft, buffer);
 
     // A copyright message at the bottom left corner the title area
     m.addPlotAreaTitle(Chart::BottomRight,
-                       "<*font=arial.ttf,size=8*>Abama Stock Analysis");
+                       "<*font=arial.ttf,size=12*>Abama Stock Analysis");
 
     //
     // Add the first techical indicator according. In this demo, we draw the first
@@ -526,10 +531,10 @@ void clsShowStockUi::drawChart(QChartViewer *viewer)
     //
     addIndicator(&m, m_Indicator2->itemData(m_Indicator2->currentIndex()).toString(),
                  indicatorHeight);
-//    addIndicator(&m, m_Indicator3->itemData(m_Indicator3->currentIndex()).toString(),
-//                 indicatorHeight);
-//    addIndicator(&m, m_Indicator4->itemData(m_Indicator4->currentIndex()).toString(),
-//                 indicatorHeight);
+    //    addIndicator(&m, m_Indicator3->itemData(m_Indicator3->currentIndex()).toString(),
+    //                 indicatorHeight);
+    //    addIndicator(&m, m_Indicator4->itemData(m_Indicator4->currentIndex()).toString(),
+    //                 indicatorHeight);
 
     // Set the chart to the viewer
     viewer->setChart(&m);
@@ -537,6 +542,66 @@ void clsShowStockUi::drawChart(QChartViewer *viewer)
     // Set image map (for tool tips) to the viewer
     sprintf(buffer, "title='%s {value|P}'", m.getToolTipDateFormat());
     viewer->setImageMap(m.getHTMLImageMap("", "", buffer));
+
+    saveSettings();
+}
+
+void clsShowStockUi::readSettings()
+{
+    clsSettings settings;
+    QString strNode = "Analysis/";
+    int intTmp;
+    QString strTmp;
+    bool blTmp;
+    settings.readSetting(strNode + "TimeRange", intTmp);
+    m_TimeRange->setCurrentIndex(intTmp);
+    settings.readSetting(strNode + "VolumBar", blTmp);
+    m_VolumeBars->setChecked(blTmp);
+    settings.readSetting(strNode + "ParabolicSAR", blTmp);
+    m_ParabolicSAR->setChecked(blTmp);
+    settings.readSetting(strNode + "LogScale", blTmp);
+    m_LogScale->setChecked(blTmp);
+    settings.readSetting(strNode + "PercetageScale",blTmp);
+    m_PercentageScale->setChecked(blTmp);
+    settings.readSetting(strNode + "ChartType", intTmp);
+    m_ChartType->setCurrentIndex(intTmp);
+    settings.readSetting(strNode + "PriceBand", intTmp);
+    m_PriceBand->setCurrentIndex(intTmp);
+    settings.readSetting(strNode + "AvgType1", intTmp);
+    m_AvgType1->setCurrentIndex(intTmp);
+    settings.readSetting(strNode + "AvgType2", intTmp);
+    m_AvgType2->setCurrentIndex(intTmp);
+    settings.readSetting(strNode + "MovAvg1",strTmp);
+    m_MovAvg1->setText(strTmp);
+    settings.readSetting(strNode + "MovAvg2", strTmp);
+    m_MovAvg2->setText(strTmp);
+    settings.readSetting(strNode + "Indicator1", intTmp);
+    m_Indicator1->setCurrentIndex(intTmp);
+    settings.readSetting(strNode + "Indicator2", intTmp);
+    m_Indicator2->setCurrentIndex(intTmp);
+
+}
+
+void clsShowStockUi::saveSettings()
+{
+    clsSettings settings;
+
+    QString strNode = "Analysis/";
+    settings.writeSetting(strNode + "TimeRange", m_TimeRange->currentIndex());
+    settings.writeSetting(strNode + "VolumBar", m_VolumeBars->isChecked());
+    settings.writeSetting(strNode + "ParabolicSAR", m_ParabolicSAR->isChecked());
+    settings.writeSetting(strNode + "LogScale", m_LogScale->isChecked());
+    settings.writeSetting(strNode + "PercetageScale",m_PercentageScale->isChecked());
+    settings.writeSetting(strNode + "ChartType", m_ChartType->currentIndex());
+    settings.writeSetting(strNode + "PriceBand", m_PriceBand->currentIndex());
+    settings.writeSetting(strNode + "AvgType1", m_AvgType1->currentIndex());
+    settings.writeSetting(strNode + "AvgType2", m_AvgType2->currentIndex());
+    settings.writeSetting(strNode + "MovAvg1",m_MovAvg1->text());
+    settings.writeSetting(strNode + "MovAvg2", m_MovAvg2->text());
+    settings.writeSetting(strNode + "Indicator1", m_Indicator1->currentIndex());
+    settings.writeSetting(strNode + "Indicator2", m_Indicator2->currentIndex());
+
+
 }
 
 void clsShowStockUi::resizeEvent(QResizeEvent */*e*/)

@@ -134,6 +134,44 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="btnBollin">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>35</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>楷体</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>布林线策略(F4)</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../MyRes.qrc">
+            <normaloff>:/Icons/bollin.png</normaloff>:/Icons/bollin.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="shortcut">
+           <string>F4</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -366,7 +404,7 @@
      <x>0</x>
      <y>0</y>
      <width>879</width>
-     <height>27</height>
+     <height>37</height>
     </rect>
    </property>
    <property name="font">

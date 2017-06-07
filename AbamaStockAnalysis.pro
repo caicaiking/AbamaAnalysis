@@ -11,7 +11,10 @@ INCLUDEPATH += Stocks \
                 DataBase \
                 Strategy \
                 CandlePlot \
-                Emails
+                Emails \
+                Utilities
+
+
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -59,7 +62,9 @@ SOURCES += \
     Emails/mimetext.cpp \
     Emails/quotedprintable.cpp \
     Emails/smtpclient.cpp \
-    Windows/clsNumberInput.cpp
+    Windows/clsNumberInput.cpp \
+    Utilities/clsSettings.cpp \
+    Strategy/clsBollin.cpp
 
 
 
@@ -103,7 +108,9 @@ HEADERS += \
     Emails/quotedprintable.h \
     Emails/smtpclient.h \
     Emails/smtpmime.h \
-    Windows/clsNumberInput.h
+    Windows/clsNumberInput.h \
+    Utilities/clsSettings.h \
+    Strategy/clsBollin.h
 
 
 FORMS += \

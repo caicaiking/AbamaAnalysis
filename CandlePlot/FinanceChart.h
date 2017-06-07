@@ -7,7 +7,7 @@
 #include <string.h>
 #include <string>
 #include <vector>
-
+#include <QDebug>
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Copyright 2012 Advanced Software Engineering Limited
 //
@@ -1056,6 +1056,8 @@ class FinanceChart : public MultiChart
         int fillColor)
     {
         //Bollinger Band is moving avg +/- (width * moving std deviation)
+
+        qDebug()<< m_closeData.len;
         ArrayMath stdDev = ArrayMath(m_closeData).movStdDev(period).mul(bandWidth);
         ArrayMath movAvg = ArrayMath(m_closeData).movAvg(period);
         char buffer[1024];

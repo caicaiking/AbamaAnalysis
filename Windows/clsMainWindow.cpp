@@ -15,6 +15,7 @@
 #include "mimetext.h"
 #include "mimemessage.h"
 #include "clsNumberInput.h"
+#include "clsBollin.h"
 
 //#include "clsStockShow.h"
 #include "clsShowStockUi.h"
@@ -192,4 +193,13 @@ void clsMainWindow::on_btnSendEmail_clicked()
 
     smtp.quit();
 
+}
+
+void clsMainWindow::on_btnBollin_clicked()
+{
+    strategy = clsStrategyFactory::getStrategy(Bollin);
+    connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+    strategy->setCondition(getJsonString());
+    lastResult= strategy->findStockCodes();
+    txtCodes->setText(lastResult.join("\t"));
 }
