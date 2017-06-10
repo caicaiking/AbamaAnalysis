@@ -35,13 +35,23 @@ private slots:
 
     void on_btnBollin_clicked();
 
+    void on_btnBollinGreen_clicked();
+
+    void on_btnAddFavorite_clicked();
+
+    void on_btnShowFavorite_clicked();
+
+    void on_btnDeleteFavirate_clicked();
+
+    void on_txtCodes_selectionChanged();
+
 private:
     QEastMoneyBlockThread *mBlockThread;
     clsStockHisThread * mStockHisThread;
 
 private:
 
-    int hsl;
+    double hsl;
     int average;
 
     QStringList lastResult;

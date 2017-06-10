@@ -33,6 +33,10 @@ public:
       void getBlockTable(QMap<QString, BlockData> &data);
       SingleStockDataList getStockData(QString strCode);
       QStringList getStockCodes();
+      static bool createFavoriteTable();
+      bool insertFavorite(QString code, QString detail);
+      bool deleteFavorite(QString code);
+      QStringList getFavorite(QString code="");
 signals:
     void showMessage(QString msg);
 private:

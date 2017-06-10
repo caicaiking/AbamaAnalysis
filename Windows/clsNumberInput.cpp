@@ -7,7 +7,7 @@ clsNumberInput::clsNumberInput(QWidget *parent) :
     setWindowFlags(windowFlags()&~Qt::WindowContextHelpButtonHint);
 }
 
-int clsNumberInput::getNumber(QWidget *parent, QString windowTitle, QString labelTitle,
+double clsNumberInput::getNumber(QWidget *parent, QString windowTitle, QString labelTitle,
                               int defaultValue, int min, int max, int step, bool *ok)
 {
 
@@ -25,7 +25,7 @@ int clsNumberInput::getNumber(QWidget *parent, QString windowTitle, QString labe
     bool res;
     res= (numberInput->exec()==QDialog::Accepted);
 
-    int spinBoxValue = numberInput->spinBox->value();
+    double spinBoxValue = numberInput->spinBox->value();
 
     numberInput->close();
     if(ok !=NULL)

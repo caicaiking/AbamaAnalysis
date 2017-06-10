@@ -6,12 +6,14 @@
 #include "clsMaStrategy.h"
 #include "clsAttact.h"
 #include "clsBollin.h"
+#include "clsBollin2.h"
 
 enum STRATEGY{
     DayMa=0,
     WeekMa=1,
     Attack=2,
-    Bollin=3
+    Bollin=3,
+    Bollin2=4
 };
 
 class clsStrategyFactory
@@ -31,6 +33,9 @@ public:
             break;
         case Bollin:
             return new clsBollin(parent);
+            break;
+        case Bollin2:
+            return new clsBollin2(parent);
             break;
         default:
             return (clsStrategy*)NULL;

@@ -16,7 +16,6 @@ clsDBCreateTables::clsDBCreateTables(QObject *parent) :QObject(parent)
 }
 
 
-
 bool clsDBCreateTables::createUpdateTable()
 {
     //emit showMessage(tr("创建更新表格"));
@@ -91,6 +90,128 @@ void clsDBCreateTables::fillStockTable()
 
     clsDBOp::instance()->getDb().commit(); //提交事物处理
 }
+
+bool clsDBCreateTables::insertFavorite(QString code, QString detail)
+{
+    QMutexLocker locker(&m_detail);
+    QStringList res = getFavorite(code);
+
+    QString sql;
+
+    if(res.length()==0)
+    {
+        sql = QString("insert into FAVORITE values('%1','%2')").arg(code).arg(detail);
+    }
+    else
+    {
+        sql = QString("update Favorite set comment ='%1' where codes ='%2'").arg(detail).arg(code);
+    }
+
+    QSqlQuery q;
+
+    if(!clsDBOp::instance()->isOpen())
+        return false;
+
+    q.exec(sql);
+    if(!q.isActive())
+        return false;
+    return true;
+
+}
+
+bool clsDBCreateTables::deleteFavorite(QString code)
+{
+
+    QMutexLocker locker(&m_detail);
+    QStringList res = getFavorite(code);
+
+    QString sql;
+
+    if(res.length()==0)
+    {
+        return true;
+    }
+    else
+    {
+        sql = QString("delete from Favorite  where codes ='%2'").arg(code);
+    }
+
+    QSqlQuery q;
+
+    if(!clsDBOp::instance()->isOpen())
+        return false;
+
+    q.exec(sql);
+    if(!q.isActive())
+        return false;
+    return true;
+}
+
+QStringList clsDBCreateTables::getFavorite(QString code)
+{
+    QMutexLocker locker(&m_operation);
+
+    QString sql;
+    if(code.isEmpty())
+        sql = "Select codes from favorite";
+
+    else
+        sql = QString("SELECT codes, comment FROM FAVORITE WHERE CODES = '%1' ").arg(code);
+
+    QSqlQuery q;
+
+    if(!clsDBOp::instance()->isOpen())
+        return QStringList();
+
+    q.exec(sql);
+    if(q.isActive())
+    {
+        QStringList tmp;
+        if(!code.isEmpty())
+        {
+            while(q.next())
+            {
+                tmp<<q.value(0).toString();
+                tmp << q.value(1).toString();
+            }
+        }
+        else
+        {
+            while(q.next())
+            {
+                tmp<<q.value(0).toString();
+            }
+        }
+
+        return tmp;
+    }
+    return QStringList();
+}
+
+bool clsDBCreateTables::createFavoriteTable()
+{
+    QMutexLocker locker(&m_operation);
+
+    QString sql = "CREATE TABLE IF NOT EXISTS favorite "
+                  "("
+                  "codes text  NOT NULL default '', "
+                  "comment text NOT NULL DEFAULT '' "
+                  ");";
+
+    QSqlQuery q;
+
+    if(!clsDBOp::instance()->isOpen())
+        return false;
+
+    q.exec(sql);
+    if(!q.isActive())
+    {
+        return false;
+    }
+    return true;
+
+}
+
 
 bool clsDBCreateTables::createBlockTable()
 {
@@ -231,22 +352,24 @@ bool clsDBCreateTables::createDetaiTable()
 //get all stock codes from database
 QStringList clsDBCreateTables::getStockCodes()
 {
-        QMutexLocker locker(&m_operation);
+    QMutexLocker locker(&m_operation);
 
-        QString sql = QString("select * from details");
-        QSqlQuery q;
+    QString sql = QString("select * from details");
+    QSqlQuery q;
 
-        if(!q.exec(sql))
-            return QStringList();
+    if(!q.exec(sql))
+        return QStringList();
 
-        QStringList tmp;
-        while(q.next())
-        {
-            tmp.append(q.value(0).toString());
-        }
+    QStringList tmp;
+    while(q.next())
+    {
+        tmp.append(q.value(0).toString());
+    }
 
-        return tmp;
+    return tmp;
 }
+
+
 
 void clsDBCreateTables::fillDetailTable(const QStringList mStkCodesList)
 {
@@ -371,20 +494,20 @@ SingleStockDataList clsDBCreateTables::getStockData(QString strCode)
     {
         while(q.next())
         {
-           SingleStockData tmp;
+            SingleStockData tmp;
 
-           tmp.date = q.value(0).toString();
-           tmp.open = q.value(1).toDouble();
-           tmp.close = q.value(2).toDouble();
-           tmp.zd = q.value(3).toDouble();
-           tmp.zdf = q.value(4).toDouble();
-           tmp.low = q.value(5).toDouble();
-           tmp.high = q.value(6).toDouble();
-           tmp.cjl = q.value(7).toDouble();
-           tmp.cje = q.value(8).toDouble();
-           tmp.hsl = q.value(9).toDouble();
+            tmp.date = q.value(0).toString();
+            tmp.open = q.value(1).toDouble();
+            tmp.close = q.value(2).toDouble();
+            tmp.zd = q.value(3).toDouble();
+            tmp.zdf = q.value(4).toDouble();
+            tmp.low = q.value(5).toDouble();
+            tmp.high = q.value(6).toDouble();
+            tmp.cjl = q.value(7).toDouble();
+            tmp.cje = q.value(8).toDouble();
+            tmp.hsl = q.value(9).toDouble();
 
-           data.append(tmp);
+            data.append(tmp);
         }
         return data;
     }

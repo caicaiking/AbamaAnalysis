@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     clsDBOp::instance()->isOpen();
     clsDBCreateTables::createUpdateTable();
-
+    clsDBCreateTables::createFavoriteTable();
 
     clsMainWindow w;
 

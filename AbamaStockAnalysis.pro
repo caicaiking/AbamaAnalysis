@@ -64,7 +64,9 @@ SOURCES += \
     Emails/smtpclient.cpp \
     Windows/clsNumberInput.cpp \
     Utilities/clsSettings.cpp \
-    Strategy/clsBollin.cpp
+    Strategy/clsBollin.cpp \
+    Strategy/clsBollin2.cpp \
+    Utilities/clsFavoriteOp.cpp
 
 
 
@@ -110,7 +112,9 @@ HEADERS += \
     Emails/smtpmime.h \
     Windows/clsNumberInput.h \
     Utilities/clsSettings.h \
-    Strategy/clsBollin.h
+    Strategy/clsBollin.h \
+    Strategy/clsBollin2.h \
+    Utilities/clsFavoriteOp.h
 
 
 FORMS += \

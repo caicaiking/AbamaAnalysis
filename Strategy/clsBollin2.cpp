@@ -1,4 +1,4 @@
-#include "clsBollin.h"
+#include "clsBollin2.h"
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
@@ -8,7 +8,7 @@
 #include <QDebug>
 
 
-clsBollin::clsBollin(QObject *parent): clsStrategy(parent)
+clsBollin2::clsBollin2(QObject *parent): clsStrategy(parent)
 {
     db = new clsDBCreateTables(this);
 
@@ -20,7 +20,7 @@ clsBollin::clsBollin(QObject *parent): clsStrategy(parent)
     m_volData = new double[0];
 }
 
-QStringList clsBollin::findStockCodes()
+QStringList clsBollin2::findStockCodes()
 {
     showProgress(tr("正在获取最后一个交易日日期"));
     QString workDay =clsGetLastWorkDay::getLastWorkDate(
@@ -41,7 +41,7 @@ QStringList clsBollin::findStockCodes()
         showProgress(QString("现在进度 %1/%2--找到：%3股票.")
                      .arg(i).arg(codes.length()).arg(stockCodes.length()));
 
-         qApp->processEvents();
+        qApp->processEvents();
 
         SingleStockDataList res = db->getStockData(strCode);
         if(res.length()< 60)
@@ -112,10 +112,14 @@ QStringList clsBollin::findStockCodes()
         double lowValue = lowerLine[ii];
         double highValue = upperLine[ii];
 
-        if((res.first().close > lowValue)
-                && (res.first().open< lowValue)
-                && (res.first().hsl*100.0 > this->hsl))
+        if((res.first().close < lowValue)
+                &&(res.first().open < res.first().close)
+                && res.first().hsl*100.0 >=this->hsl)
+        {
+            qDebug()<< res.first().hsl;
+
             stockCodes.append(strCode);
+        }
         else
             continue;
 
@@ -127,7 +131,7 @@ QStringList clsBollin::findStockCodes()
     return stockCodes;
 }
 
-void clsBollin::setCondition(QString condition)
+void clsBollin2::setCondition(QString condition)
 {
     QJsonParseError error;
     QJsonDocument doc = QJsonDocument::fromJson(condition.toUtf8(),
@@ -146,7 +150,7 @@ void clsBollin::setCondition(QString condition)
     }
 }
 
-void clsBollin::deepCopy(DoubleArray &dest, DoubleArray src)
+void clsBollin2::deepCopy(DoubleArray &dest, DoubleArray src)
 {
     if (src.len > dest.len)
     {

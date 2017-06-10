@@ -16,7 +16,7 @@
 #include "mimemessage.h"
 #include "clsNumberInput.h"
 #include "clsBollin.h"
-
+#include "clsFavoriteOp.h"
 //#include "clsStockShow.h"
 #include "clsShowStockUi.h"
 
@@ -67,6 +67,8 @@ void clsMainWindow::on_actHsl_triggered()
 void clsMainWindow::on_btnMa_clicked()
 {
 
+    lblTitle->setText(btnMa->text());
+
     QInputDialog * dlg = new QInputDialog(this);
     dlg->setWindowTitle(tr("设置要使用的日均线"));
 
@@ -90,6 +92,7 @@ void clsMainWindow::on_btnMa_clicked()
 //搜索上攻形态股票
 void clsMainWindow::on_btnAttact_clicked()
 {
+    lblTitle->setText(btnAttact->text());
     strategy = clsStrategyFactory::getStrategy(Attack);
     connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
 
@@ -101,6 +104,8 @@ void clsMainWindow::on_btnAttact_clicked()
 void clsMainWindow::on_btnWeekMa_clicked()
 {
     bool ok;
+
+    lblTitle->setText(btnWeekMa->text());
     average = clsNumberInput::getNumber(this,tr("设置要使用的周均线"),tr("均线周数：")
                                         ,this->average,5,200,1,&ok);
 
@@ -143,6 +148,7 @@ QString clsMainWindow::getJsonString()
 
 void clsMainWindow::on_btnShowStock_clicked()
 {
+
     QString stockCode = txtCodes->textCursor().selectedText();
 
     //QString stockCode = "sz300081";
@@ -197,9 +203,82 @@ void clsMainWindow::on_btnSendEmail_clicked()
 
 void clsMainWindow::on_btnBollin_clicked()
 {
+    lblTitle->setText(btnBollin->text());
     strategy = clsStrategyFactory::getStrategy(Bollin);
     connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
     strategy->setCondition(getJsonString());
     lastResult= strategy->findStockCodes();
     txtCodes->setText(lastResult.join("\t"));
+}
+
+void clsMainWindow::on_btnBollinGreen_clicked()
+{
+    lblTitle->setText(btnBollinGreen->text());
+    strategy = clsStrategyFactory::getStrategy(Bollin2);
+    connect(strategy,SIGNAL(showProgress(QString)),label,SLOT(setText(QString)));
+    strategy->setCondition(getJsonString());
+    lastResult= strategy->findStockCodes();
+    txtCodes->setText(lastResult.join("\t"));
+}
+
+void clsMainWindow::on_btnAddFavorite_clicked()
+{
+    clsFavoriteOp *op = new clsFavoriteOp(this);
+
+    QString selectText = txtCodes->textCursor().selectedText();
+
+    selectText = selectText.remove(QRegExp("\\s"));
+
+    if(selectText.length() ==8)
+    {
+        op->addFavorite(selectText, txtDetail->document()->toPlainText());
+    }
+
+
+}
+
+void clsMainWindow::on_btnShowFavorite_clicked()
+{
+    clsFavoriteOp *op = new clsFavoriteOp(this);
+
+    lastResult = op->showFavorite();
+    txtCodes->setText(lastResult.join("\t"));
+}
+
+void clsMainWindow::on_btnDeleteFavirate_clicked()
+{
+    clsFavoriteOp *op = new clsFavoriteOp(this);
+
+    QString selectText = txtCodes->textCursor().selectedText();
+
+    selectText = selectText.remove(QRegExp("\\s"));
+
+    if(selectText.length() ==8)
+    {
+        op->deleteFavorite(selectText);
+        txtDetail->clear();
+    }
+
+}
+
+void clsMainWindow::on_txtCodes_selectionChanged()
+{
+
+    QString selectText = txtCodes->textCursor().selectedText();
+    selectText = selectText.remove(QRegExp("\\s"));
+
+    if(selectText.length() ==8)
+    {
+        clsFavoriteOp *op = new clsFavoriteOp(this);
+        QStringList res =op->showFavorite(selectText);
+
+        if(res.length() ==2)
+        {
+            txtDetail->setText(res.at(1));
+        }
+    }
+    else
+    {
+        txtDetail->clear();
+    }
 }

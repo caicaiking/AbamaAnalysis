@@ -10,7 +10,7 @@ class clsNumberInput : public QDialog, private Ui::clsNumberInput
 public:
     explicit clsNumberInput(QWidget *parent = 0);
 
-    static int getNumber(QWidget *parent, QString windowTitle, QString labelTitle,
+    static double getNumber(QWidget *parent, QString windowTitle, QString labelTitle,
                          int defaultValue, int min, int max, int step=1, bool *ok=NULL);
 private slots:
     void on_btnOk_clicked();
