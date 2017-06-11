@@ -13,6 +13,13 @@ clsWeekMa::clsWeekMa(QObject *parent)
     average = 20;
 
     db = new clsDBCreateTables(this);
+
+    m_timeStamps = new double[0];
+    m_highData = new double[0];
+    m_lowData = new double[0];
+    m_openData = new double[0];
+    m_closeData = new double[0];
+    m_volData = new double[0];
 }
 
 QStringList clsWeekMa::findStockCodes()
@@ -161,4 +168,15 @@ void clsWeekMa::setCondition(QString condition)
             this->lastCode = obj.value("stocks").toString().split(",", QString::SkipEmptyParts);
         }
     }
+}
+
+void clsWeekMa::deepCopy(DoubleArray &dest, DoubleArray src)
+{
+    if (src.len > dest.len)
+    {
+        delete[] const_cast<double *>(dest.data);
+        dest.data = new double[src.len];
+    }
+    memcpy(const_cast<double *>(dest.data), src.data, src.len * sizeof(double));
+    dest.len = src.len;
 }

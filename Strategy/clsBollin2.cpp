@@ -58,8 +58,8 @@ QStringList clsBollin2::findStockCodes()
                 continue;
         }
 
-        if(res.first().open > res.first().close)
-            continue;
+//        if(res.first().open > res.first().close)
+//            continue;
 
         delete[] m_timeStamps;
         delete[] m_highData;
@@ -113,7 +113,8 @@ QStringList clsBollin2::findStockCodes()
         double highValue = upperLine[ii];
 
         if((res.first().close < lowValue)
-                &&(res.first().open < res.first().close)
+                &&(res.first().open > res.first().close)
+                &&(res.first().open > lowValue)
                 && res.first().hsl*100.0 >=this->hsl)
         {
             qDebug()<< res.first().hsl;

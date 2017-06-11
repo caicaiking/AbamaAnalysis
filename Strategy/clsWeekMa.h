@@ -4,7 +4,7 @@
 #include <QObject>
 #include <clsStrategy.h>
 #include "clsDBCreateTables.h"
-
+#include "memblock.h"
 class clsWeekMa : public clsStrategy
 {
 public:
@@ -12,8 +12,17 @@ public:
 
     QStringList findStockCodes();
     void setCondition(QString condition);
-
 private:
+    void deepCopy(DoubleArray &dest, DoubleArray src);
+private:
+
+    double* m_timeStamps;
+    double* m_highData;
+    double* m_lowData;
+    double* m_openData;
+    double* m_closeData;
+    double* m_volData;
+
     QStringList lastCode;
     double hsl;
     int average;
