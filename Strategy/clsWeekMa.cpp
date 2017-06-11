@@ -14,12 +14,7 @@ clsWeekMa::clsWeekMa(QObject *parent)
 
     db = new clsDBCreateTables(this);
 
-    m_timeStamps = new double[0];
-    m_highData = new double[0];
-    m_lowData = new double[0];
-    m_openData = new double[0];
-    m_closeData = new double[0];
-    m_volData = new double[0];
+
 }
 
 QStringList clsWeekMa::findStockCodes()

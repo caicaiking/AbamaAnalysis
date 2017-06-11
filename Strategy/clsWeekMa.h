@@ -16,13 +16,6 @@ private:
     void deepCopy(DoubleArray &dest, DoubleArray src);
 private:
 
-    double* m_timeStamps;
-    double* m_highData;
-    double* m_lowData;
-    double* m_openData;
-    double* m_closeData;
-    double* m_volData;
-
     QStringList lastCode;
     double hsl;
     int average;
